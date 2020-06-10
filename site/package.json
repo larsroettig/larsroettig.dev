@@ -1,0 +1,27 @@
+{
+  "name": "site",
+  "main": "index.js",
+  "version": "0.0.1",
+  "author": "Lars Roettig <l.roettig@techdivision.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "develop": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  },
+  "dependencies": {
+    "@larsroettig-dev/theme": "^0.0.1",
+    "gatsby": "^2.20.36",
+    "gatsby-plugin-manifest": "^2.2.3",
+    "gatsby-plugin-netlify": "^2.1.3",
+    "gatsby-plugin-offline": "^2.2.4",
+    "gatsby-plugin-sitemap": "^2.2.19",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0"
+  }
+}

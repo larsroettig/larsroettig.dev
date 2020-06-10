@@ -1,0 +1,16 @@
+# Ignore everything:
+/*
+
+# Except these root files:
+!CONTRIBUTING.md
+!LICENSE
+!README.md
+
+# Except these sources for the www workspace
+!/larsroettig_dev/site/content
+!/larsroettig_dev/site/public
+!/larsroettig_dev/site/static
+!/larsroettig_dev/site/gatsby-config.js
+
+# Ignore nothing for the theme workspace
+!/@larsroettig

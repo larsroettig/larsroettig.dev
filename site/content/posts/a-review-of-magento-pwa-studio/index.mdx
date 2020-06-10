@@ -1,0 +1,87 @@
+---
+title: A Review of Magento PWA Studio
+date: 2020-02-26
+updated_at: 2020-02-26
+author: Lars Roettig
+published: true
+description:
+  Is PWA Studio ready or not, and what we should know before starting a project. I would like to have a look at that with you.
+hero: ./PWA_Studio_Teaser.jpg
+---
+Before we start, I want to provide a short overview of the PWA Studio architecture. With Magento PWA Studio, we should have the opportunity to build a complex Progressive Web Applications on top of Magento 2. Can we already realize **real** customer **projects** with PWA Studio? I would like to have a look at that with you. This blog post will be updated at regular intervals.
+The Magento Core Team selected **React** ( **JavaScript** ), **GraphQL** , **CSS Modules** as the leading technologies to build this theme from scratch.
+
+Magento PWA Studio uses a Monorepo structure.
+For those reasons, after checkout, we already see ten subfolders.
+They packages are most likely unrelated, loosely connected, or connected.
+To give an example, **venia-ui** needs elements from **peregrine**. Let&#39;s take a look at which components we have in the current state.
+
+**Main Libraries**
+If we start our a PWA-Project, we mostly change components from these two libraries to have our own PWA theme.
+- **peregrine** - A component library for adding logic to visual elements
+- **venia-ui** - Library of React Component for PWA storefront projects
+
+**Elements for building**
+
+- **pwa-buildpack** - A tooling library to help with PWA storefront development
+- **upward-spec** - UPWARD specification and test suite
+- **upward-js** - A reference implementation of the UPWARD specification
+- **babel-preset-peregrine** - A babel preset plugin that is required to use peregrine components
+- **graphql-cli-validate-magento-pwa-queries** - A script to validate your project&#39;s GraphQL queries against a schema
+
+**Other elements**
+
+- **venia-styleguide** - The style guide for venia components
+- **venia-concept** - A concept storefront project built using PWA Studio tools
+- **pwa-devdocs** - Source for the documentation site ([http://pwastudio.io/](http://pwastudio.io/))
+
+## Current features in PWA Studio version 5.0
+
+Currently, the PWA Studio offers a small collection of tools and components.
+For me, it is a library that allows building a custom PWA Theme for Magento.
+- Support Simple and Configurable Product
+- Category Page
+- CMS Pages and Blocks
+- Magento PageBuilder
+- Product Detail Page
+- Cart
+- Checkout
+- Page Builder integration
+- Braintree payment
+
+
+- **Release Notes:**
+  - [v5.0.0](https://github.com/magento/pwa-studio/releases/tag/v5.0.0)
+
+
+### Release 5.0.1
+
+PWA Studio 5.0.1 is a patch release to fix an Image loading issue. Also, a security fix prevents invalid mutation caching.
+With `fetchPolicy: 'no-cache'` it is possible to define mutation the should not be added to  Apollo query cache.
+
+**For more Information see:**
+- [Apollo graphql cache interaction](https://www.apollographql.com/docs/react/caching/cache-interaction/#bypassing-the-cache)
+- **Release Notes:**
+  - [v5.0.1](https://github.com/magento/pwa-studio/releases/tag/v5.0.1)
+
+
+## Features that are currently not supported
+
+- Sort and Filters on the category and search page (Planned for v6)
+- Payment Methods for Central European Market
+- Deployment scripts
+- &quot;More&quot; Extension Points
+  - build
+  - env valid
+  - talon
+  - routing
+- More shipping methods currently only `flat rate`
+- Wishlist
+- Translation support
+- Bundle product support
+- Multi-Store support of multi-currency, and languages
+
+### Summary
+Although the project is still in an early stage of development, the PWA Studio already offers a toolkit for creating a PWA theme. Due to the lack of extension points and multilingualism, you will have to write many React extensions yourself, which can make large projects very complicated and expensive.
+With build things from scratch, it is possible to ignore legacy problems and create new great ideas. On the other hand, it takes a long time to get a stable software anyway with a production-ready feature set.
+From my point of view, it is good to now with a small project to gather experience with the new PWA Studio even there are already a few bigger projects live.

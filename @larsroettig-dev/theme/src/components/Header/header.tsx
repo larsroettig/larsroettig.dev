@@ -1,0 +1,52 @@
+/** @jsx jsx */
+import { jsx, useColorMode } from 'theme-ui';
+import { Link } from 'gatsby';
+import { Flex, Box } from '@theme-ui/components';
+import { tailwind } from '@theme-ui/presets';
+import { FaRss } from 'react-icons/all';
+import Container from '../container';
+import useBlogConfig from '../../hooks/useBlogConfig';
+import ColorModeToggle from './colormode-toggle';
+import replaceSlashes from '../../utils/replaceSlashes';
+import LarsLogo from '../Brand';
+
+const Header = () => {
+
+  const { basePath } = useBlogConfig();
+  const [colorMode, setColorMode] = useColorMode();
+  const isDark = colorMode === 'dark';
+  const toggleColorMode = (e: any) => {
+    e.preventDefault();
+    setColorMode(isDark ? 'light' : 'dark');
+  };
+  const color = '#2D3748';
+
+  return (
+    <div sx={{ backgroundColor: tailwind.colors.gray[3] }}>
+      <Container padding={'1rem 2rem '}>
+        <header>
+          <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+            <Link
+              to={replaceSlashes(`/${basePath}`)}
+              aria-label={`Back to home`}
+              sx={{ color: 'heading', textDecoration: 'none' }}
+            >
+              <LarsLogo color={color}/>
+            </Link>
+
+            <Box sx={{ display: 'flex' }}>
+              <ColorModeToggle isDark={isDark} toggle={toggleColorMode}/>
+              <Link to={replaceSlashes(`/${basePath}/rss.xml`)}
+                    sx={{ padding: '2px 1rem', color }}>
+                <FaRss/>
+              </Link>
+            </Box>
+          </Flex>
+
+        </header>
+      </Container>
+    </div>
+  );
+};
+
+export default Header;

@@ -1,0 +1,46 @@
+[
+  {
+    "name": "Lars Roettig",
+    "bio": " Software Engineer at TechDivision GmbH and Maintainer of the Community Engineering Team at Magento. He has 8 years of professional SoftwareEngineering experience. Lars is passionate about Magento and Open Source.",
+    "avatar": "./avatars/lars_roettig.jpeg",
+    "showSocial": false,
+    "social": [
+      {
+        "type": "facebook",
+        "url": "https://facebook.com"
+      },
+      {
+        "type": "twitter",
+        "url": "https://twitter.com/LarsRoettig"
+      },
+      {
+        "type": "github",
+        "url": "https://github.com/larsroettig"
+      },
+      {
+        "type": "linkedin",
+        "url": "https://linkedin.com/in/larsroettig"
+      }
+    ]
+  },
+  {
+    "name": "Jordan Eisenburger",
+    "bio": "Jordan has been working within the Magento Eco system for 5 years. One of his roles within Experius is the innovator. Researching new systems, solutions and technologies in the frontend working field. He is also a PWA Studio maintainer and enthousiast.",
+    "avatar": "./avatars/jordan_eisenburger.png",
+    "showSocial": true,
+    "social": [
+      {
+        "type": "twitter",
+        "url": "https://twitter.com/jordaneisenburg"
+      },
+      {
+        "type": "github",
+        "url": "https://github.com/Jordaneisenburger"
+      },
+      {
+        "type": "linkedin",
+        "url": "https://www.linkedin.com/in/jordaneisenburger/"
+      }
+    ]
+  }
+]

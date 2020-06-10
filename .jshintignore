@@ -1,0 +1,7 @@
+.cache
+public
+node_modules
+node
+cypress
+gatsby-node.js
+@larsroettig-dev/theme/src/gatsby-plugin-theme-ui
