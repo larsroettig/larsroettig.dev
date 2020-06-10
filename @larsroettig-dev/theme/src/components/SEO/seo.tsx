@@ -347,6 +347,13 @@ const SEO = (properties: HelmetProps) => {
     {property: 'og:site_name', content: site.name},
   ];
 
+  if (timeToRead) {
+    // @ts-ignore
+    metaTags.push({ name: 'twitter:label1', value: 'Reading time' });
+    // @ts-ignore
+    metaTags.push({ name: 'twitter:data1', value: `${timeToRead} min read` });
+  }
+
   return (
     <Helmet
       title={title || site.title}

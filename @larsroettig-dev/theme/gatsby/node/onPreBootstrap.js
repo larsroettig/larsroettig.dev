@@ -15,7 +15,7 @@ module.exports = ({ reporter, store }, themeOptions) => {
   directories.forEach((directory) => {
     if (!fs.existsSync(directory)) {
       reporter.info(`Initializing "${directory}" directory`);
-      mkdirp.sync(directory);
+      fs.mkdirSync(directory, { recursive: true });
     }
   });
 };
