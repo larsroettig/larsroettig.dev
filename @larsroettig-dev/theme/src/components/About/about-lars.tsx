@@ -2,8 +2,6 @@
 import {jsx} from 'theme-ui';
 import * as React from 'react';
 import {Box, Grid} from '@theme-ui/components';
-import { graphql, StaticQuery } from 'gatsby'
-import Img from 'gatsby-image'
 import Container from '../container';
 import Top50 from "./cert-top50";
 import ProDev from "./pro-dev";

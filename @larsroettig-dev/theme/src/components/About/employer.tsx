@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui';
 import { Grid, Box, Text } from '@theme-ui/components';
-import { tailwind } from '@theme-ui/presets';
 
 /** @todo should move from theme in site folder  */
 const employerList = [

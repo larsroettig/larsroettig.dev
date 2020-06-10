@@ -9,8 +9,6 @@ import ScrollUp from './ScrollUp';
 import Header from './Header';
 import Footer from './Footer';
 import CodeStyles from '../styles/code';
-import SEO from "./SEO";
-import {IArticle} from "../types";
 type LayoutProps = { children: React.ReactNode}
 
 const Layout = ({children}: LayoutProps) => {
