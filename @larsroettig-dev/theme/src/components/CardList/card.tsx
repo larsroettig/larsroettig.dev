@@ -36,7 +36,7 @@ const Card = ({ article, showDescription = true }: CardProps) => {
           sx={{textDecoration: 'none'}}>
       <div>
         <StyledImg style={{maxHeight: '300px'}}
-                   fluid={article.hero.regular}/>
+                   fluid={article.hero.narrow}/>
       </div>
       <div sx={{padding: '0.9rem'}}>
 

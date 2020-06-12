@@ -26,6 +26,7 @@ const ProDev = () => (
       render={data => (
         <div sx={{maxWidth: '80px',  margin:'auto'}}>
         <Img
+          alt="Image from my Magento 2 professional developer certification"
           fluid={data.placeholderImage.childImageSharp.fluid}
         />
         </div>

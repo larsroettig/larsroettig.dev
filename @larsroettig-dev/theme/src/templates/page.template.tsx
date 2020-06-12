@@ -10,11 +10,12 @@ const Page: Template = ({pageContext, location}) => {
 
   const {title, body} = pageContext
 
+  const description = title +' Page';
+
   return (
     <Layout>
-      <SEO />
+      <SEO title={title} description={description} pathname={location.pathname} isBlogPost={false}/>
       <Container>
-        <SEO title={title}/>
         <section sx={{my: 5}}>
           <MDX content={body}/>
         </section>

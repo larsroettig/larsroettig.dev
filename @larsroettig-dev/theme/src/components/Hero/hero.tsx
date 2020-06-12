@@ -11,7 +11,7 @@ import Avatar from './avatar';
 const Hero = () => (
     <div
       sx={{
-        backgroundColor: tailwind.colors.gray[3],
+        backgroundColor: 'headerBackground',
       }}>
       <Container padding={'0'} >
         <Flex sx={{ flexWrap: 'wrap' }}>
@@ -32,7 +32,6 @@ const Hero = () => (
               width: ['100%', '100%', '60%'],
               pl: '2rem',
               minHeight: ['200px', '250px'],
-              color: tailwind.colors.gray[8],
             }}
           >
             <div

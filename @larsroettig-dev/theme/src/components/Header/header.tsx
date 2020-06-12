@@ -19,10 +19,10 @@ const Header = () => {
     e.preventDefault();
     setColorMode(isDark ? 'light' : 'dark');
   };
-  const color = '#2D3748';
+  const color = isDark === false ? '#2D3748': tailwind.colors.gray[3];
 
   return (
-    <div sx={{ backgroundColor: tailwind.colors.gray[3] }}>
+    <div sx={{ backgroundColor: 'headerBackground' }}>
       <Container padding={'1rem 2rem '}>
         <header>
           <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
@@ -36,7 +36,7 @@ const Header = () => {
 
             <Box sx={{ display: 'flex' }}>
               <ColorModeToggle isDark={isDark} toggle={toggleColorMode}/>
-              <Link to={replaceSlashes(`/${basePath}/rss.xml`)}
+              <Link alt="A Link to rss feed" to={replaceSlashes(`/${basePath}/rss.xml`)}
                     sx={{ padding: '2px 1rem', color }}>
                 <FaRss/>
               </Link>

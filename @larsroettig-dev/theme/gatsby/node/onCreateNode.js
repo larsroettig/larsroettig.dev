@@ -13,7 +13,7 @@ module.exports = ({
   const {createNode, createParentChildLink, createNodeField} = actions;
 
   const {
-    basePath, postsPath, pagesPath, authorsPath, supporterPath,
+    basePath, postsPath, pagesPath, authorsPath, supporterPath,contentRepo
   } = withDefaults(themeOptions);
 
   const articlePermalinkFormat = themeOptions.articlePermalinkFormat || ':slug';
@@ -92,6 +92,7 @@ module.exports = ({
   if (source === pagesPath) {
     const fieldData = {
       title: node.frontmatter.title,
+      description: node.frontmatter.description,
       slug: node.frontmatter.slug,
     };
 
@@ -132,6 +133,17 @@ module.exports = ({
       value: articleSlug,
     });
 
+    const editLink = contentRepo.concat(node.fileAbsolutePath.replace(
+        process.cwd(),
+        '',
+      ));
+
+    createNodeField({
+      name: 'editLink',
+      node,
+      value: editLink
+    })
+
     const fieldData = {
       author: node.frontmatter.author,
       date: node.frontmatter.date,
@@ -141,6 +153,7 @@ module.exports = ({
       title: node.frontmatter.title,
       description: node.frontmatter.description,
       canonical_url: node.frontmatter.canonical_url,
+      editLink
     };
 
     createNode({

@@ -29,6 +29,7 @@ module.exports = ({ actions, createContentDigest }, themeOptions) => {
         excerpt(pruneLength: Int = 140): String!
         body: String!
         hero: File @fileByRelativePath
+        editLink: String!
         timeToRead: Int
       }
     `);
@@ -38,6 +39,7 @@ module.exports = ({ actions, createContentDigest }, themeOptions) => {
         id: ID!
         slug: String!
         title: String!
+        description: String!
         body: String!
      }
     `);

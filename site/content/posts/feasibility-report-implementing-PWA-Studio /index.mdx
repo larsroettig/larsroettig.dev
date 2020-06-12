@@ -1,0 +1,70 @@
+---
+title: Feasibility report for implementing PWA Studio
+date: 2020-06-11
+author: Jordan Eisenburger
+description: A report for implementing PWA Studio for different implementer roles.
+hero: ./implementing_pwa_teaser.jpg
+---
+
+<Callout type={'info'}>
+  <p className={"p-2"}>This report is based on PWA Studio v5.0.1</p>
+  <p>Note: These are just my personal opinions/experiences</p>
+</Callout>
+
+
+Before you start working with Studio it's important to know if you are a one-time implementer or an agency hoping to do multiple projects with Studio. As far as I see it there are two ways of implementing Studio:
+1. You use the scaffolding command @magento/create-pwa
+2. You create a mono-repo that depends on the packages from Studio that serves as your core product
+
+## A merchant with in-house developers
+When you are a merchant and want to make the transition to PWA Studio and you don’t have a partner agency. It makes a lot of sense for your developers (in-house or freelance) to use the scaffolding tool since there’s probably only one webshops going to be built upon the system this route gives you a flying start into your project.
+
+**Feature support:**<br/>
+Before start development examine your current webshops and create a list of features that you actually use (not the once you have but never use) this will keep the PWA lightweight, reduce development time and thus keep costs lower.
+
+**Development team:**<br/>
+Studio is fully API driven which means that besides a front-end developer with Javascript/react experience you also need a back-end developer preferably with GraphQL/Rest experience to create new endpoints that can interpret by the PWA
+
+**3rth party module support:** <br/>
+If your curated list of features include a lot of 3rth party modules then most likely you going to have to put development time into adding API support for there modules. But before you do so check their websites, with PWA/headless becoming more of a household name 3rth party extension developers slowly start adding API support.
+Note that at this point in time there are no 3rth party extension that I’m aware of that deliver both API Support and Studio compatible front-end components. This means that you are going to create those yourself. Let’s say you make use of a module that has 8 functionalities but you only really use 2, just create frontend support those two. This will keep the costs lower and functionalities tailored to your webshop.
+
+## An Agency
+When you are an agency like Experius and are planning to implement multiple projects for different customer you’d want to go with the mono-repo approach. This way gives you a lot of freedom in terms of what packages you use from Studio but also a solid base product that can easily be upgraded to newer version of Studio to keep all you customers up-to-date with the latest development by Magento.
+
+**Feature support:**<br/>
+When you start working on your first project make sure to backport all functionalities to your mono-repo. For example when you need to add bundled product support for your customer build it in your mono-repo as generic as possible and tweak it to the customers needs in their project that’s build with the mono-repo. When you start doing this for all features and new projects your mono-repo will grow really fast and before you know it you will have a full repo of packages ready to rapidly develop any project
+
+**Development team:**<br/>
+Studio is fully API driven which means that besides a front-end developer with Javascript/react experience you also need a back-end developer preferably with GraphQL/Rest experience to create new endpoints that can interpret by the PWA.
+
+**3rth party module support:** <br/>
+This is basically the same workflow as “Feature support” above.
+
+
+**Pain points:**<br/>
+Would love to see more feature / bugfix releases instead of only major version releases.
+Not all basic shop features are implemented yet by the Studio team.
+At the moment you need to do a lot of overwriting instead of a possibility to extend files/functionalities (this is something being worked on).
+No full SEO support so you need to use something like SeoSnap.io like we do over at Experius.
+If you are an agency with “traditional” Magento developers (little to no reactjs/javascript) you will need to put time in to learning.
+You need to make sure your PSP supports headless environments, if not they will have to add support for it.
+
+**Wins:** <br/>
+If done right you need less development time in the long run.
+An awesome community / Studio team.
+Lots of development joy for your developers.
+Easy to implement new techniques from the always evolving front-end space.
+A future proof webshop
+
+**Recommendations:** <br/>
+Start simple don’t try to build everything before launch go with the essentials first.
+Make sure to have you components/utilities covered with unit tests
+Setup a pipeline (GitHub, Bitbucket etc) and run E2E tests in the pipeline before your new code reaches a environment. We use Cypress.io over at Experius
+Join the #pwa slack channel
+
+**Final note:**<br/>
+Having created eleganza-shop.com on Studio v3.0.0 and an upcoming project due to launch soon on 5.0.1 I’ve seen both the pwa community and PWA Studio as a product seen major jumps forward. My main tip would be: Ship, learn and then iterate
+
+PS: PWA Studio is production ready if you have the right development team and proper scope.
+Live PWA Studio projects: https://pwastudio-stats.com/

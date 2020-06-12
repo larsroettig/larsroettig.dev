@@ -28,6 +28,7 @@ export interface IAuthor {
     medium:  IGatsbyImageFluid;
 
   };
+  showSocial: boolean;
   social: ISocialMedia[];
 }
 
@@ -40,6 +41,7 @@ export interface IArticle {
   title: string;
   dateForSEO: string;
   description: string;
+  editLink: string;
   hero: {
     full: IGatsbyImageFluid;
     preview: IGatsbyImageFluid;

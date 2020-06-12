@@ -2,10 +2,12 @@
 
 import {jsx} from 'theme-ui';
 import styled from '@emotion/styled';
-import {Grid, Box, Text} from '@theme-ui/components';
+import {Grid, Box, Text, Flex} from '@theme-ui/components';
 import Img from "gatsby-image";
 
 import {IAuthor} from "../../types";
+import SocialLinks from "./social-links";
+
 
 type AuthorProps = {
   author: IAuthor
@@ -24,6 +26,9 @@ const StyledImg = styled(Img)`
 
 const Author = ({author}: AuthorProps) => {
 
+  const authorSocialLinks = author.showSocial === true
+    ? <SocialLinks socialMedia={author.social}/> : '';
+
   return (
     <Container>
       <Grid
@@ -36,12 +41,24 @@ const Author = ({author}: AuthorProps) => {
           <StyledImg fluid={author.avatar.medium}/>
         </Box>
         <Box>
-          <small sx={{textTransform: 'uppercase', color: '#a0aec0'}}>
-            Written by
-          </small>
+          <Grid
+            sx={{
+              gridColumnGap: '1rem',
+              gridTemplateColumns: ['1fr 1fr'],
+            }}
+          >
+            <small sx={{textTransform: 'uppercase', color: '#a0aec0'}}>
+              Written by
+            </small>
+            <Box sx={{justifySelf: 'end', paddingRight: '1rem'}}>
+              {authorSocialLinks}
+            </Box>
+          </Grid>
           <Text sx={{fontSize: '1.125rem'}}>{author.name}</Text>
           {author.bio}
+
         </Box>
+
       </Grid>
     </Container>
   )

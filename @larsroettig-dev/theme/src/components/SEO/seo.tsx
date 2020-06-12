@@ -369,6 +369,7 @@ const SEO = (properties: HelmetProps) => {
       <link rel="apple-touch-icon" sizes="180x180"
             href={withPrefix('/apple-touch-icon.png')}/>
       {children}
+      <script async defer data-domain="larsroettig.dev" src="https://plausible.io/js/plausible.js"></script>
     </Helmet>
   );
 };

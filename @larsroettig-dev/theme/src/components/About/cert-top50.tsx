@@ -26,6 +26,7 @@ const Top50 = () => (
       render={data => (
         <div sx={{maxWidth: '170px', padding: '10px', borderRadius: '1rem',margin:'auto', backgroundColor: 'rgba(255,255,255,0.8)'}}>
         <Img
+          alt="Image with Badged of TOP 50 Magento Contributor 2017"
           fluid={data.placeholderImage.childImageSharp.fluid}
         />
         </div>

@@ -31,6 +31,7 @@ module.exports.local = {
           timeToRead
           excerpt
           body
+          editLink
           hero {
             full: childImageSharp {
               fluid(maxWidth: 944, quality: 100) {
@@ -43,7 +44,7 @@ module.exports.local = {
               }
             }
             narrow: childImageSharp {
-              fluid(maxWidth: 457, quality: 100) {
+              fluid(maxWidth: 300, quality: 80) {
                 ${GatsbyFluid_withWebp}
               }
             }
@@ -69,6 +70,7 @@ module.exports.local = {
             type
             url
           }
+          showSocial
           avatar {
             small: childImageSharp {
               fluid(maxWidth: 50, quality: 100) {
@@ -95,6 +97,7 @@ module.exports.local = {
       allPage {
         nodes {
           slug
+          title
           body
         }
       }

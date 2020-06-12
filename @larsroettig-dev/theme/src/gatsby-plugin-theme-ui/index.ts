@@ -49,13 +49,16 @@ export default {
     secondary: '#5f6c80',
     toggleIcon: tailwind.colors.gray[8],
     heading: tailwind.colors.black,
+    headerBackground: tailwind.colors.gray[3],
     divide: tailwind.colors.gray[4],
     modes: {
       dark: {
+        headerBackground: '#111d2d',
+        toggleIcon: tailwind.colors.gray[3],
         text: tailwind.colors.gray[3],
         primary: tailwind.colors.blue[5],
         secondary: '#7f8ea3',
-        background: '#000a1b',
+        background: '#11171c',
         about: '#111d2d'
       },
     },

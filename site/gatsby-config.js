@@ -1,6 +1,6 @@
 
 const siteMetadata = {
-  title: 'Home page',
+  title: 'Homepage von larsroettig.dev blog ',
   name: 'Lars Roettig',
   siteUrl: 'https://larsroettig.dev',
   description: `A blog about
@@ -53,16 +53,8 @@ const plugins = [
   {
     resolve: '@larsroettig-dev/theme',
     options: {
-      navigation: [
-        {
-          title: 'Blog',
-          slug: '/blog',
-        },
-        {
-          title: 'About',
-          slug: '/about',
-        },
-      ],
+      navigation: [],
+      contentRepo: 'https://github.com/larsroettig/larsroettig.dev/edit/master/site'
     },
   },
 ];
