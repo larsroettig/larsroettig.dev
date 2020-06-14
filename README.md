@@ -3,6 +3,12 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=larsroettig_larsroettig.dev&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=larsroettig_larsroettig.dev)
 [![DeepScan grade](https://deepscan.io/api/teams/9672/projects/12261/branches/187112/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=9672&pid=12261&bid=187112)
 
+
+<a href="https://larsroettig.dev/" target="_blank">
+<img src="https://raw.githubusercontent.com/larsroettig/larsroettig.dev/master/site/static/preview_full.jpg" alt="gatsby-novela-theme hero image" />
+</a>
+<br/>
+
 Content Structure 
 ```
   site
