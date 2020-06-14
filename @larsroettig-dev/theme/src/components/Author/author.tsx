@@ -2,7 +2,7 @@
 
 import {jsx} from 'theme-ui';
 import styled from '@emotion/styled';
-import {Grid, Box, Text, Flex} from '@theme-ui/components';
+import {Box, Grid, Text} from '@theme-ui/components';
 import Img from "gatsby-image";
 
 import {IAuthor} from "../../types";

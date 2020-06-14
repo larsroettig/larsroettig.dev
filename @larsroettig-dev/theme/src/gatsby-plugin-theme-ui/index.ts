@@ -1,4 +1,4 @@
-import { tailwind } from '@theme-ui/presets';
+import {tailwind} from '@theme-ui/presets';
 
 const headingStyles = {
   h1: {

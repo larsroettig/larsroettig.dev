@@ -1,11 +1,11 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui';
+import {jsx} from 'theme-ui';
 
 interface iSvg {
   color: string;
 }
 
-const FavIcon = ({ color }: iSvg) => (
+const FavIcon = ({color}: iSvg) => (
   <svg width="32" height="32" viewBox="0 0 46 46"
        xmlns="http://www.w3.org/2000/svg">
     <path fill={color}

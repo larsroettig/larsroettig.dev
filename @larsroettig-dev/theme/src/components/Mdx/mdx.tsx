@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { MDXRenderer } from 'gatsby-plugin-mdx';
-import { MDXProvider } from '@mdx-js/react';
+import {MDXRenderer} from 'gatsby-plugin-mdx';
+import {MDXProvider} from '@mdx-js/react';
 
 import styled from '@emotion/styled';
-import { useColorMode } from 'theme-ui';
+import {useColorMode} from 'theme-ui';
 
 import Code from './Code';
 import Callout from './callout';
@@ -19,7 +19,7 @@ interface MDXProps {
   content: React.ReactNode;
 }
 
-const MDX: React.FC<MDXProps> = ({ content, children, ...properties }) => {
+const MDX: React.FC<MDXProps> = ({content, children, ...properties}) => {
   const [colorMode] = useColorMode();
 
   return (

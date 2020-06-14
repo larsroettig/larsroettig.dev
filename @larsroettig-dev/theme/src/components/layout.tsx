@@ -1,7 +1,5 @@
 /** @jsx jsx */
-import {
-  Box, css, jsx, Styled,
-} from 'theme-ui';
+import {Box, css, jsx, Styled,} from 'theme-ui';
 import {Global} from '@emotion/core';
 import 'typeface-roboto';
 import * as React from 'react';
@@ -9,7 +7,8 @@ import ScrollUp from './ScrollUp';
 import Header from './Header';
 import Footer from './Footer';
 import CodeStyles from '../styles/code';
-type LayoutProps = { children: React.ReactNode}
+
+type LayoutProps = { children: React.ReactNode }
 
 const Layout = ({children}: LayoutProps) => {
   return (

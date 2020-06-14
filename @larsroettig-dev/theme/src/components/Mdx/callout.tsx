@@ -1,7 +1,7 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui';
+import {jsx} from 'theme-ui';
 import * as React from 'react';
-import { tailwind } from '@theme-ui/presets';
+import {tailwind} from '@theme-ui/presets';
 
 type CalloutProps = {
   type: string;

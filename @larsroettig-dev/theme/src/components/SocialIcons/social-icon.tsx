@@ -3,15 +3,15 @@ import React from 'react';
 
 type SocialIconProps = { url: string; children: React.ReactNode }
 
-const SocialIcon = ({ url, children }: SocialIconProps) => (
-    <a target="_blank"
-       rel="noopener noreferrer nofollow"
-       data-a11y="false"
-       aria-label={`Link to ${url}`}
-       href={url}
-    >
-      {children}
-    </a>
+const SocialIcon = ({url, children}: SocialIconProps) => (
+  <a target="_blank"
+     rel="noopener noreferrer nofollow"
+     data-a11y="false"
+     aria-label={`Link to ${url}`}
+     href={url}
+  >
+    {children}
+  </a>
 );
 
 export default SocialIcon;

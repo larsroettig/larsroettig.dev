@@ -24,7 +24,8 @@ const About = () => (
               Engineer at TechDivision GmbH.
             </p>
             <p>
-              As Magento PWAStudio i try help with any problem or feature request.
+              As Magento PWAStudio i try help with any problem or feature
+              request.
             </p>
             <p>
               In my Free time I really like to bask in nature’s glory right here
@@ -35,9 +36,9 @@ const About = () => (
             <h4> Certifications and Awards </h4>
             <Grid sx={{
               gridColumnGap: '1rem',
-              gridTemplateColumns: [ '1fr 1fr']
+              gridTemplateColumns: ['1fr 1fr']
             }}>
-              <ProDev />
+              <ProDev/>
               <Top50/>
             </Grid>
 

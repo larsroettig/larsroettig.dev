@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui';
-import { Grid, Box, Text } from '@theme-ui/components';
+import {jsx} from 'theme-ui';
+import {Box, Grid, Text} from '@theme-ui/components';
 
 /** @todo should move from theme in site folder  */
 const employerList = [
@@ -31,20 +31,20 @@ const Employer = () => {
   const employerElements = [...employerList].map((employer) => {
     const key = `${employer.company_name}--${employer.start_date}`;
     return (
-      <Grid key={key} sx={{ gridTemplateColumns: '70% 30%' }}>
+      <Grid key={key} sx={{gridTemplateColumns: '70% 30%'}}>
         <Box>
-          <Text sx={{ fontSize: [2], fontWeight: '300' }}>
+          <Text sx={{fontSize: [2], fontWeight: '300'}}>
             {employer.company_name}
           </Text>
-          <Text sx={{ padding: '4px 0' }}>
+          <Text sx={{padding: '4px 0'}}>
             {employer.title}
           </Text>
-          <Text sx={{ opacity: 0.8 }}>
+          <Text sx={{opacity: 0.8}}>
             Tech stack: {employer.tech_stack}
           </Text>
         </Box>
         <Box>
-          <Text sx={{ padding: '4px 0', opacity: 0.8 }}>
+          <Text sx={{padding: '4px 0', opacity: 0.8}}>
             {employer.start_date} - {employer.end_date}
           </Text>
         </Box>

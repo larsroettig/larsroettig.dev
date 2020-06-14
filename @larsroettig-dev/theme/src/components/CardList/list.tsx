@@ -15,7 +15,8 @@ const CardList = ({articles}: CardListProps) => (
     gridTemplateColumns: ['1fr', '1fr 1fr', '1fr 1fr', '1fr 1fr 1fr'],
     gridAutoRows: '1fr',
   }}>
-    {articles.map((article) => (<Card article={article} showDescription={true} key={article.slug}/>))}
+    {articles.map((article) => (
+      <Card article={article} showDescription={true} key={article.slug}/>))}
   </Grid>
 );
 

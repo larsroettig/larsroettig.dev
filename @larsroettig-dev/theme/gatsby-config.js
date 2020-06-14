@@ -62,7 +62,6 @@ module.exports = (themeOptions) => {
             {
               resolve: 'gatsby-remark-external-links',
               options: {
-                target: '_blank',
                 rel: 'noreferrer',
               },
             },
@@ -83,7 +82,6 @@ module.exports = (themeOptions) => {
             {
               resolve: 'gatsby-remark-external-links',
               options: {
-                target: '_blank',
                 rel: 'noreferrer',
               },
             },

@@ -18,14 +18,14 @@ const HomePage: HomeTemplate = ({pageContext}) => {
 
   return (
     <Layout>
-      <SEO />
+      <SEO/>
       <Hero/>
       <SocialIcons/>
       <Container>
         <h2 sx={{fontSize: [4, 5]}}>Blog</h2>
         {!isSSR && (
           <React.Suspense fallback={<div/>}>
-            <CardList articles={articles} />
+            <CardList articles={articles}/>
           </React.Suspense>
         )}
       </Container>

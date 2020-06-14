@@ -1,11 +1,11 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui';
+import {jsx} from 'theme-ui';
 
 interface iSvg {
   color: string;
 }
 
-const TechDivisionLogo = ({ color }: iSvg) => (
+const TechDivisionLogo = ({color}: iSvg) => (
   <a
     href='https://www.techdivision.com/en'
     rel='noopener noreferrer'

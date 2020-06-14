@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui';
+import {jsx} from 'theme-ui';
 
 type Props = {
   isDark: boolean;
@@ -8,7 +8,7 @@ type Props = {
 
 // Adapted from: https://codepen.io/aaroniker/pen/KGpXZo and https://github.com/narative/gatsby-theme-novela/blob/master/%40narative/gatsby-theme-novela/src/components/Navigation/Navigation.Header.tsx
 
-const ColorModeToggle = ({ isDark, toggle }: Props) => (
+const ColorModeToggle = ({isDark, toggle}: Props) => (
   <button
     onClick={toggle}
     type="button"
@@ -30,7 +30,7 @@ const ColorModeToggle = ({ isDark, toggle }: Props) => (
       cursor: 'pointer',
       padding: 0,
       appearance: 'none',
-      '&:hover, &:focus': { opacity: 1 },
+      '&:hover, &:focus': {opacity: 1},
     }}
   >
     <div

@@ -349,9 +349,9 @@ const SEO = (properties: HelmetProps) => {
 
   if (timeToRead) {
     // @ts-ignore
-    metaTags.push({ name: 'twitter:label1', value: 'Reading time' });
+    metaTags.push({name: 'twitter:label1', value: 'Reading time'});
     // @ts-ignore
-    metaTags.push({ name: 'twitter:data1', value: `${timeToRead} min read` });
+    metaTags.push({name: 'twitter:data1', value: `${timeToRead} min read`});
   }
 
   return (
@@ -369,7 +369,8 @@ const SEO = (properties: HelmetProps) => {
       <link rel="apple-touch-icon" sizes="180x180"
             href={withPrefix('/apple-touch-icon.png')}/>
       {children}
-      <script async defer data-domain="larsroettig.dev" src="https://plausible.io/js/plausible.js"></script>
+      <script async defer data-domain="larsroettig.dev"
+              src="https://plausible.io/js/plausible.js"></script>
     </Helmet>
   );
 };

@@ -1,11 +1,11 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui';
-import { css } from '@emotion/core';
+import {jsx} from 'theme-ui';
+import {css} from '@emotion/core';
 
 type ContainerProps = { children: React.ReactNode; padding?: string };
-const Container = ({ children, padding = '2rem' }: ContainerProps) => (
-    <div
-      css={css`
+const Container = ({children, padding = '2rem'}: ContainerProps) => (
+  <div
+    css={css`
         padding: ${padding};
         box-sizing: border-box;
         min-width: 0;
@@ -15,9 +15,9 @@ const Container = ({ children, padding = '2rem' }: ContainerProps) => (
         margin-left: auto;
         margin-right: auto;
       `}
-    >
-      {children}
-    </div>
+  >
+    {children}
+  </div>
 );
 
 export default Container;

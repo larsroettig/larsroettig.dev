@@ -1,1 +1,1 @@
-export { default } from './notification-message';
+export {default} from './notification-message';

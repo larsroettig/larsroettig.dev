@@ -1,1 +1,1 @@
-export { default } from './larsroettig';
+export {default} from './larsroettig';

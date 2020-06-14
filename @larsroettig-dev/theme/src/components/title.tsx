@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import React from 'react';
-import { jsx } from 'theme-ui';
-import { Box } from '@theme-ui/components';
+import {jsx} from 'theme-ui';
+import {Box} from '@theme-ui/components';
 
 type TitleProps = {
   children?: React.ReactNode;
@@ -11,8 +11,8 @@ type TitleProps = {
 }
 
 const Title = ({
-  text, children, as = 'h2', className,
-}: TitleProps) => (
+                 text, children, as = 'h2', className,
+               }: TitleProps) => (
   <div
     sx={{
       justifyContent: 'space-between',
@@ -30,7 +30,11 @@ const Title = ({
     <Box
       as={as}
       sx={{
-        fontWeight: 'medium', fontSize: [3, 4], fontFamily: 'heading', lineHeight: 'heading', color: 'heading',
+        fontWeight: 'medium',
+        fontSize: [3, 4],
+        fontFamily: 'heading',
+        lineHeight: 'heading',
+        color: 'heading',
       }}
       className={className}
     >

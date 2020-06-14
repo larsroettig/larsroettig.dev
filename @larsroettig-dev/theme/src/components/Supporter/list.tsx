@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import {jsx} from 'theme-ui';
-import { SupporterNode } from "../../types";
+import {SupporterNode} from "../../types";
 import SupporterItem from "./item";
 
 type SupporterListProps = {

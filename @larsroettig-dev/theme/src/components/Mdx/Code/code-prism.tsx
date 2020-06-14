@@ -1,6 +1,6 @@
 /* eslint react/destructuring-assignment: 0 */
 import * as React from 'react';
-import Highlight, { defaultProps } from 'prism-react-renderer';
+import Highlight, {defaultProps} from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/nightOwl';
 import Prism from 'prism-react-renderer/prism';
 import CopyClipboard from './copy-clipboard';
@@ -53,12 +53,12 @@ const calculateLinesToHighlight = (meta: string) => {
 };
 
 const Code = ({
-  codeString,
-  noLineNumbers = false,
-  className: blockClassName,
-  metastring = '',
-}: CodeProps) => {
-  const [language, { title = '' }] = getParameters(blockClassName);
+                codeString,
+                noLineNumbers = false,
+                className: blockClassName,
+                metastring = '',
+              }: CodeProps) => {
+  const [language, {title = ''}] = getParameters(blockClassName);
 
   const shouldHighlightLine = calculateLinesToHighlight(metastring);
   const hasLineNumbers = !noLineNumbers && language !== 'noLineNumbers' && true;
@@ -70,7 +70,7 @@ const Code = ({
       language={language}
       theme={theme}
     >
-      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+      {({className, style, tokens, getLineProps, getTokenProps}) => (
         <React.Fragment>
           {title && (
             <div className="code-title">
@@ -83,21 +83,21 @@ const Code = ({
               style={style}
               data-linenumber={hasLineNumbers}
             >
-              <CopyClipboard code={codeString} />
+              <CopyClipboard code={codeString}/>
               {tokens.map((line, i) => {
-                const lineProperties = getLineProps({ line, key: i });
+                const lineProperties = getLineProps({line, key: i});
 
                 if (shouldHighlightLine(i)) {
                   lineProperties.className = `${lineProperties.className} highlight-line`;
                 }
-                
+
                 return (
                   <div key={`div--${i}`} {...lineProperties}>
                     {hasLineNumbers && (
                       <span className="line-number-style">{i + 1}</span>
                     )}
                     {line.map((token, key) => (
-                      <span key={key} {...getTokenProps({ token, key })} />
+                      <span key={key} {...getTokenProps({token, key})} />
                     ))}
                   </div>
                 );

@@ -1,9 +1,9 @@
 /** @jsx jsx */
-import { jsx, useColorMode } from 'theme-ui';
-import { Link } from 'gatsby';
-import { Flex, Box } from '@theme-ui/components';
-import { tailwind } from '@theme-ui/presets';
-import { FaRss } from 'react-icons/all';
+import {jsx, useColorMode} from 'theme-ui';
+import {Link} from 'gatsby';
+import {Box, Flex} from '@theme-ui/components';
+import {tailwind} from '@theme-ui/presets';
+import {FaRss} from 'react-icons/all';
 import Container from '../container';
 import useBlogConfig from '../../hooks/useBlogConfig';
 import ColorModeToggle from './colormode-toggle';
@@ -12,32 +12,33 @@ import LarsLogo from '../Brand';
 
 const Header = () => {
 
-  const { basePath } = useBlogConfig();
+  const {basePath} = useBlogConfig();
   const [colorMode, setColorMode] = useColorMode();
   const isDark = colorMode === 'dark';
   const toggleColorMode = (e: any) => {
     e.preventDefault();
     setColorMode(isDark ? 'light' : 'dark');
   };
-  const color = isDark === false ? '#2D3748': tailwind.colors.gray[3];
+  const color = isDark === false ? '#2D3748' : tailwind.colors.gray[3];
 
   return (
-    <div sx={{ backgroundColor: 'headerBackground' }}>
+    <div sx={{backgroundColor: 'headerBackground'}}>
       <Container padding={'1rem 2rem '}>
         <header>
-          <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+          <Flex sx={{alignItems: 'center', justifyContent: 'space-between'}}>
             <Link
               to={replaceSlashes(`/${basePath}`)}
               aria-label={`Back to home`}
-              sx={{ color: 'heading', textDecoration: 'none' }}
+              sx={{color: 'heading', textDecoration: 'none'}}
             >
               <LarsLogo color={color}/>
             </Link>
 
-            <Box sx={{ display: 'flex' }}>
+            <Box sx={{display: 'flex'}}>
               <ColorModeToggle isDark={isDark} toggle={toggleColorMode}/>
-              <Link alt="A Link to rss feed" to={replaceSlashes(`/${basePath}/rss.xml`)}
-                    sx={{ padding: '2px 1rem', color }}>
+              <Link alt="A Link to rss feed"
+                    to={replaceSlashes(`/${basePath}/rss.xml`)}
+                    sx={{padding: '2px 1rem', color}}>
                 <FaRss/>
               </Link>
             </Box>

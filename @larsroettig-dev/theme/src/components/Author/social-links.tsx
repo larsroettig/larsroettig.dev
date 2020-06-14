@@ -4,7 +4,6 @@ import {ISocialMedia} from "../../types";
 import SocialIconResolver from "../SocialIcons/social-icon-resolver";
 import {Flex} from "@theme-ui/components";
 import {IconContext} from "react-icons";
-import {tailwind} from '@theme-ui/presets';
 
 type SocialLinksProps = {
   socialMedia: ISocialMedia[]
@@ -17,10 +16,10 @@ const SocialLinks = ({socialMedia}: SocialLinksProps) => {
   ));
 
   return (
-    <div sx={{ maxWidth: '140px'}}>
+    <div sx={{maxWidth: '140px'}}>
       <Flex sx={{flexWrap: 'wrap'}}>
         <IconContext.Provider
-          value={{ size: '1.1rem'}}>
+          value={{size: '1.1rem'}}>
           {socialIcons}
         </IconContext.Provider>
       </Flex>
