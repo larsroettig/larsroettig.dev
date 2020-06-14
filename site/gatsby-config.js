@@ -1,3 +1,4 @@
+const getBlogFeed = require(`../@larsroettig-dev/theme/gatsby/node/createBlogFeed`);
 
 const siteMetadata = {
   title: 'Homepage von larsroettig.dev blog ',
@@ -56,6 +57,13 @@ const plugins = [
       navigation: [],
       contentRepo: 'https://github.com/larsroettig/larsroettig.dev/edit/master/site'
     },
+  },
+  {
+    resolve: 'gatsby-plugin-feed',
+    options: getBlogFeed('Lars Roettig DEV Feed'),
+  },
+  {
+    resolve: 'gatsby-plugin-sitemap',
   },
   {
     resolve: 'gatsby-plugin-robots-txt',

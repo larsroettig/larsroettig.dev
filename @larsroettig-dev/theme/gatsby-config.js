@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-undef
 const withDefaults = require('./gatsby/node/themeOption');
 
-const getBlogFeed = require(`./gatsby/node/createBlogFeed`);
+
 
 // eslint-disable-next-line no-undef
 module.exports = (themeOptions) => {
@@ -88,10 +88,7 @@ module.exports = (themeOptions) => {
           ],
         },
       },
-      {
-        resolve: 'gatsby-plugin-feed',
-        options: getBlogFeed('Lars Roettig DEV Feed'),
-      },
+
       'gatsby-plugin-offline',
       'gatsby-transformer-sharp',
       'gatsby-plugin-sharp',
