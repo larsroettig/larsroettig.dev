@@ -2,7 +2,7 @@
 import {jsx} from 'theme-ui';
 import * as React from "react";
 import styled from "@emotion/styled";
-import {Box, Flex, Text} from '@theme-ui/components';
+import {Box, Flex} from '@theme-ui/components';
 import {tailwind} from '@theme-ui/presets';
 import {FaClock} from "react-icons/all";
 import {Template} from "../types";
@@ -133,8 +133,10 @@ const Article: Template = ({pageContext, location}) => {
               }}
             >
               <MDX content={article.body}/>
-              <p sx={{textAlign: 'right', fontWeight: '300' }}>
-                <a sx={{textDecoration:'none', color: 'primary'}} target="_blank" rel="noopener noreferrer" href={article.editLink}>
+              <p sx={{textAlign: 'right', fontWeight: '300'}}>
+                <a sx={{textDecoration: 'none', color: 'primary'}}
+                   target="_blank" rel="noopener noreferrer"
+                   href={article.editLink}>
                   Edit post on GitHub
                 </a>
               </p>

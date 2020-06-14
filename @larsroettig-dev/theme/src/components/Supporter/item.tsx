@@ -20,7 +20,7 @@ const StyledImg = styled(Img)`
 
 const SupporterItem = ({supporter}: SupporterItemProps) => {
   return (
-    <a href={supporter.website} target='_blank'>
+    <a href={supporter.website}>
       <StyledImg alt={supporter.alt}
                  fluid={supporter.image.mobile.childImageSharp.fluid}/>
     </a>

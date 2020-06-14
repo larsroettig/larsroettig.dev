@@ -1,1 +1,1 @@
-export { default } from './seo';
+export {default} from './seo';

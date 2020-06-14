@@ -1,9 +1,7 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui';
+import {jsx} from 'theme-ui';
 import {Box} from "@theme-ui/components";
-import {
-  FaFacebookF, FaTwitter, FaLinkedin, FaGithub,
-} from 'react-icons/fa';
+import {FaFacebookF, FaGithub, FaLinkedin, FaTwitter,} from 'react-icons/fa';
 import SocialIcon from "./social-icon";
 
 type SocialIconResolverProps = {

@@ -1,16 +1,17 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui';
+import {jsx} from 'theme-ui';
 import ScrollUpButton from 'react-scroll-up-button';
-import { IconContext } from 'react-icons';
-import { FaArrowCircleUp } from 'react-icons/all';
+import {IconContext} from 'react-icons';
+import {FaArrowCircleUp} from 'react-icons/all';
 import styled from '@emotion/styled';
 
 const ScrollUp = () => (
 
   <ScrollUpButton>
     <ScrollBody>
-      <IconContext.Provider value={{ size: '1.5em' }}>
-        <FaArrowCircleUp sx={{ backgroundColor: 'background', borderRadius: '20px' }}/>
+      <IconContext.Provider value={{size: '1.5em'}}>
+        <FaArrowCircleUp
+          sx={{backgroundColor: 'background', borderRadius: '20px'}}/>
       </IconContext.Provider>
     </ScrollBody>
   </ScrollUpButton>

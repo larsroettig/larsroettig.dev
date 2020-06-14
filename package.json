@@ -12,16 +12,17 @@
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "lint": "eslint --fix --ignore-path .jshintignore -- .",
-    "start": "yarn workspace site develop"
+    "start": "yarn workspace site develop",
+    "commit": "commit"
   },
   "workspaces": [
     "@larsroettig-dev/theme",
     "site"
   ],
   "devDependencies": {
-    "@commitlint/cli": "^8.1.0",
-    "@commitlint/config-conventional": "^8.1.0",
-    "@commitlint/travis-cli": "^8.1.0",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/prompt-cli": "^8.3.5",
     "@typescript-eslint/eslint-plugin": "^2.31.0",
     "@typescript-eslint/parser": "^2.31.0",
     "cypress": "^4.4.1",

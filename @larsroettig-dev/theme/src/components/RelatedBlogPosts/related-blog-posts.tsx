@@ -25,7 +25,8 @@ const RelatedBlogPosts = ({articles}: RelatedBlogPostsProps) => {
         gridTemplateColumns: ['1fr', '1fr', '1fr 1fr'],
       }}>
         {articles.map((article) => (
-          <Card article={article} showDescription={false} key={article.slug}/>))}
+          <Card article={article} showDescription={false}
+                key={article.slug}/>))}
       </Grid>
     </RelatedPostsContainer>
   )

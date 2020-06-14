@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from "@emotion/styled";
-import {tailwind} from '@theme-ui/presets';
 
 
 type NotificationMessageProps = {

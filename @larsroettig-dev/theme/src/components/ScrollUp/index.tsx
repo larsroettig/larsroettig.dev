@@ -1,1 +1,1 @@
-export { default } from './scroll-up';
+export {default} from './scroll-up';

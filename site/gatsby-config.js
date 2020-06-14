@@ -57,6 +57,14 @@ const plugins = [
       contentRepo: 'https://github.com/larsroettig/larsroettig.dev/edit/master/site'
     },
   },
+  {
+    resolve: 'gatsby-plugin-robots-txt',
+    options: {
+      host: 'https://larsroettig.dev',
+      sitemap: 'https://larsroettig.dev/sitemap.xml',
+      policy: [{ userAgent: '*', allow: '/' }]
+    }
+  }
 ];
 
 module.exports = {

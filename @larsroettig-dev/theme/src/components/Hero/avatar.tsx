@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui';
-import { useStaticQuery, graphql } from 'gatsby';
+import {jsx} from 'theme-ui';
+import {graphql, useStaticQuery} from 'gatsby';
 import GatsbyImg from 'gatsby-image';
 
 const Avatar = () => {

@@ -1,4 +1,4 @@
-import { graphql, useStaticQuery } from 'gatsby';
+import {graphql, useStaticQuery} from 'gatsby';
 
 type Props = {
   blogConfig: {

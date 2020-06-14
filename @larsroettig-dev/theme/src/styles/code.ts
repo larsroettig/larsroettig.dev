@@ -1,4 +1,3 @@
-
 export default {
   '.prism-code': {
     fontSize: 1,

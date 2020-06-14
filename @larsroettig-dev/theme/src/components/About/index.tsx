@@ -1,1 +1,1 @@
-export { default } from './about-lars';
+export {default} from './about-lars';

@@ -24,8 +24,8 @@ export interface IAuthor {
   slug: string;
   bio: string;
   avatar: {
-    small:  IGatsbyImageFluid;
-    medium:  IGatsbyImageFluid;
+    small: IGatsbyImageFluid;
+    medium: IGatsbyImageFluid;
 
   };
   showSocial: boolean;
