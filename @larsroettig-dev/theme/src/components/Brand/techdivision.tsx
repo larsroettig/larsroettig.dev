@@ -8,9 +8,7 @@ interface iSvg {
 const TechDivisionLogo = ({color}: iSvg) => (
   <a
     href='https://www.techdivision.com/en'
-    rel='noopener noreferrer'
     aria-label="Read more about TechDivision"
-    target='_blank'
   >
     <svg
       width='150px'

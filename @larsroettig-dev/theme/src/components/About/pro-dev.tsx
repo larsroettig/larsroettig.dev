@@ -5,7 +5,7 @@ import Img from "gatsby-image";
 import {Box} from '@theme-ui/components';
 
 const ProDev = () => (
-  <a target="_blank"
+  <a
      rel="noopener noreferrer nofollow"
      data-a11y="false"
      href={'https://u.magento.com/certification/directory/dev/id/1752523'}

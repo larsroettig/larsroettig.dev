@@ -5,7 +5,7 @@ import Img from "gatsby-image";
 import {Box} from '@theme-ui/components';
 
 const Top50 = () => (
-  <a target="_blank"
+  <a
      rel="noopener noreferrer nofollow"
      data-a11y="false"
      href={'https://magento.com/blog/technical/thank-you-top-50-contributors-2017'}
