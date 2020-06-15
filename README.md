@@ -5,7 +5,7 @@
 
 
 <a href="https://larsroettig.dev/" target="_blank">
-<img src="https://raw.githubusercontent.com/larsroettig/larsroettig.dev/master/site/static/preview_full.jpg" alt="gatsby-novela-theme hero image" />
+<img src="https://github.com/larsroettig/larsroettig.dev/blob/master/static/preview_full.png" alt="larsroettig.dev hero image" />
 </a>
 <br/>
 
