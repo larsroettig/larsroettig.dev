@@ -88,7 +88,6 @@ module.exports = (themeOptions) => {
           ],
         },
       },
-
       'gatsby-plugin-offline',
       'gatsby-transformer-sharp',
       'gatsby-plugin-sharp',

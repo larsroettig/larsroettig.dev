@@ -308,7 +308,6 @@ const SEO = (properties: HelmetProps) => {
   });
 
   const schema = isBlogPost ? blogSchema : siteSchema
-  canonicalUrl = canonicalUrl || currentUrl
 
   const authorTag = authorName !== '' ?
     <meta name="author" content={authorName}/> : '';
@@ -366,7 +365,7 @@ const SEO = (properties: HelmetProps) => {
       <meta name="image" content={image} />
       {authorTag}
 
-      {canonicalUrl && <link rel="canonical" href={canonicalUrl}/>}
+
       <script type="application/ld+json">{schema}</script>
       <link rel="icon" type="image/png" sizes="32x32"
             href={withPrefix('/favicon-32x32.png')}/>
