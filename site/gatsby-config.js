@@ -63,6 +63,8 @@ const plugins = [
     options: getBlogFeed('Lars Roettig DEV Feed'),
   },
   {
+    resolve: 'gatsby-plugin-remove-trailing-slashes',
+  }, {
     resolve: 'gatsby-plugin-sitemap',
   },
   {
