@@ -1,4 +1,5 @@
-const getBlogFeed = require(`../@larsroettig-dev/theme/gatsby/node/createBlogFeed`);
+const getBlogFeed = require(
+  `../@larsroettig-dev/theme/gatsby/node/createBlogFeed`);
 
 const siteMetadata = {
   title: 'Homepage von larsroettig.dev blog ',
@@ -55,7 +56,7 @@ const plugins = [
     resolve: '@larsroettig-dev/theme',
     options: {
       navigation: [],
-      contentRepo: 'https://github.com/larsroettig/larsroettig.dev/edit/master/site'
+      contentRepo: 'https://github.com/larsroettig/larsroettig.dev/edit/master/site',
     },
   },
   {
@@ -63,8 +64,6 @@ const plugins = [
     options: getBlogFeed('Lars Roettig DEV Feed'),
   },
   {
-    resolve: 'gatsby-plugin-remove-trailing-slashes',
-  }, {
     resolve: 'gatsby-plugin-sitemap',
   },
   {
@@ -72,9 +71,9 @@ const plugins = [
     options: {
       host: 'https://larsroettig.dev',
       sitemap: 'https://larsroettig.dev/sitemap.xml',
-      policy: [{ userAgent: '*', allow: '/' }]
-    }
-  }
+      policy: [{userAgent: '*', allow: '/'}],
+    },
+  },
 ];
 
 module.exports = {
