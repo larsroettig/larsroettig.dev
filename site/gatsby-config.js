@@ -68,13 +68,6 @@ const plugins = [
     resolve: 'gatsby-plugin-sitemap',
   },
   {
-    resolve: `gatsby-plugin-canonical-urls`,
-    options: {
-      siteUrl: `https://larsroettig.dev`,
-      stripQueryString: true,
-    },
-  },
-  {
     resolve: 'gatsby-plugin-robots-txt',
     options: {
       host: 'https://larsroettig.dev',

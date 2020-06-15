@@ -19,7 +19,6 @@
     "gatsby-plugin-sitemap": "^2.2.19",
     "gatsby-plugin-feed": "^2.5.5",
     "gatsby-plugin-robots-txt": "^1.5.1",
-    "gatsby-plugin-remove-trailing-slashes":"^2.3.5",
     "gatsby-plugin-canonical-urls": "^2.3.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
