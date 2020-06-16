@@ -74,7 +74,7 @@ const siteQuery = graphql`
 
 const Article: Template = ({pageContext, location}) => {
   // fix for location is wrong https://github.com/gatsbyjs/gatsby/issues/9207
-  location.pathname.concat('/');
+  location.pathname = location.pathname.concat('/');
   const {article, authors, next} = pageContext;
   const author = authors[0];
 
