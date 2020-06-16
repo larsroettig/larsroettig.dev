@@ -1,84 +1,109 @@
-import * as React from 'react';
-import {Helmet} from 'react-helmet';
-import {withPrefix} from 'gatsby';
-import useSiteMetadata from '../../hooks/useSiteMetadata';
-import {IAuthor} from "../../types";
+/**
+ * This react helmt code is adapted from
+ * https://themeteorchef.com/tutorials/reusable-seo-with-react-helmet.
+ *
+ * A great tutorial explaining how to setup a robust version of an
+ * SEO friendly react-helmet instance.
+ *
+ *
+ * Use the Helmt on pages to generate SEO and meta content!
+ *
+ * Usage:
+ * <SEO
+ *   title={title}
+ *   description={description}
+ *   image={image}
+ * />
+ *
+ */
 
-const defaultProps = {
-  title: '',
-  description: false,
-  pathname: false,
-  image: false,
-  children: null,
-  isBlogPost: false
-};
+import * as React from "react";
+import Helmet from 'react-helmet';
+import { graphql, useStaticQuery } from 'gatsby';
 
 interface HelmetProps {
-  articlePathName?: string;
-  author?: IAuthor
+  articlepathName?: string;
+  authorName?: string;
+  authorsBio?: string;
+  authorsSlug?: string;
   canonicalUrl?: string;
   dateforSEO?: string;
   description?: string;
   image?: string;
-  isBlogPost: boolean;
+  isBlogPost: false;
   pathname: string;
   published?: string;
   timeToRead?: string;
   title: string;
-  children;
 }
 
+const seoQuery = graphql`
+  {
+    allSite {
+      edges {
+        node {
+          siteMetadata {
+            description
+            social {
+              url
+              name
+            }
+            siteUrl
+            title
+            name
+          }
+        }
+      }
+    }
+  }
+`;
 
-const SEO = (properties: HelmetProps) => {
-  let {
-    articlePathName,
-    author,
-    canonicalUrl,
-    children,
-    dateforSEO,
-    description,
-    image,
-    isBlogPost,
-    pathname,
-    timeToRead,
-    title
-  } = properties;
+const themeUIDarkModeWorkaroundScript = [
+  {
+    type: 'text/javascript',
+    innerHTML: `
+    (function() {
+      try {
+        var mode = localStorage.getItem('theme-ui-color-mode');
+        if (!mode) {
+          localStorage.setItem('theme-ui-color-mode', 'light');
+        }
+      } catch (e) {}
+    })();
+  `,
+  },
+];
+
+const SEO: React.FC<HelmetProps> = ({
+                                      articlepathName,
+                                      authorName,
+                                      authorsBio,
+                                      authorsSlug,
+                                      canonicalUrl,
+                                      children,
+                                      dateforSEO,
+                                      description,
+                                      image,
+                                      isBlogPost,
+                                      pathname,
+                                      published,
+                                      timeToRead,
+                                      title,
+                                    }) => {
+  const results = useStaticQuery(seoQuery);
+  const site = results.allSite.edges[0].node.siteMetadata;
+  const twitter = site.social.find(option => option.name === 'twitter') || {};
+  const github = site.social.find(option => option.name === 'github') || {};
+  const linkedin = site.social.find(option => option.name === 'linkedin') || {};
+  const medium = site.social.find(option => option.name === 'medium') || {};
+
+  const pageUrl = site.siteUrl + pathname
 
   const fullURL = (path: string) =>
     path ? `${path}` : site.siteUrl;
 
-  const site = useSiteMetadata();
-
-  const {siteLanguage, siteUrl} = site;
-  const currentUrl = `${siteUrl}${pathname || ''}`;
-
-  image = image || `${site.siteUrl}/preview.jpg`;
-  title = title || site.title
-  description = description || site.description
-
-  const twitter = site.social.find(option => option.name === 'twitter') || {};
-  const github = site.social.find(option => option.name === 'github') || {};
-  const linkedin = site.social.find(option => option.name === 'linkedin') || {};
-
-  let authorSlug = '';
-  let authorName = '';
-  let authorsBio = '';
-  let authorTwitterUrl = '';
-  let authorGithubUrl = '';
-  let authorLinkedinUrl = '';
-
-  if (author !== undefined) {
-    authorSlug = author.slug;
-    authorName = author.name;
-    authorsBio = author.bio;
-    authorTwitterUrl = author.social.find(option => option.type === 'twitter').url || '';
-    authorGithubUrl = author.social.find(option => option.type === 'github').url || '';
-    authorLinkedinUrl = author.social.find(option => option.type === 'linkedin').url || '';
-  }
-
-  const pageUrl = site.siteUrl + pathname
-
-  image = image || `${site.siteUrl}/preview.jpg`;
+  // If no image is provided lets looks for a default novela static image
+  image = image ? image : `${site.siteUrl}/preview.jpg`;
 
   // Checks if the source of the image is hosted on Contentful
   if (`${image}`.includes('ctfassets')) {
@@ -87,7 +112,7 @@ const SEO = (properties: HelmetProps) => {
     image = fullURL(image);
   }
 
-  const siteSchema = `{
+  let siteSchema = `{
     "@context": "https://schema.org",
     "@graph": [
       {
@@ -98,7 +123,8 @@ const SEO = (properties: HelmetProps) => {
         "sameAs": [
           "${twitter.url}",
           "${github.url}",
-          "${linkedin.url}"
+          "${linkedin.url}",
+          "${medium.url}"
         ],
         "logo": {
           "@type": "ImageObject",
@@ -158,12 +184,12 @@ const SEO = (properties: HelmetProps) => {
 `.replace(/"[^"]+"|(\s)/gm, function (matched, group1) {
     if (!group1) {
       return matched;
+    } else {
+      return '';
     }
-    return '';
-
   });
 
-  const blogSchema = `{
+  let blogSchema = `{
     "@context": "https://schema.org",
     "@graph": [
       {
@@ -174,7 +200,8 @@ const SEO = (properties: HelmetProps) => {
         "sameAs": [
           "${twitter.url}",
           "${github.url}",
-          "${linkedin.url}"
+          "${linkedin.url}",
+          "${medium.url}"
         ],
         "logo": {
           "@type": "ImageObject",
@@ -202,7 +229,7 @@ const SEO = (properties: HelmetProps) => {
       },
       {
         "@type": "ImageObject",
-        "@id": "${articlePathName}/#primaryimage",
+        "@id": "${articlepathName}/#primaryimage",
         "inLanguage": "en-US",
         "url": "${image}",
         "width": 1200,
@@ -212,26 +239,26 @@ const SEO = (properties: HelmetProps) => {
         "@type": [
           "WebPage"
         ],
-        "@id": "${articlePathName}/#webpage",
-        "url": "${articlePathName}",
+        "@id": "${articlepathName}/#webpage",
+        "url": "${articlepathName}",
         "name": "${title}",
         "isPartOf": {
           "@id": "${site.siteUrl}/#website"
         },
         "primaryImageOfPage": {
-          "@id": "${articlePathName}/#primaryimage"
+          "@id": "${articlepathName}/#primaryimage"
         },
         "datePublished": "${dateforSEO}",
         "dateModified": "${dateforSEO}",
         "description": "${description}",
         "breadcrumb": {
-          "@id": "${articlePathName}/#breadcrumb"
+          "@id": "${articlepathName}/#breadcrumb"
         },
         "inLanguage": "en-US"
       },
       {
         "@type": "BreadcrumbList",
-        "@id": "${articlePathName}/#breadcrumb",
+        "@id": "${articlepathName}/#breadcrumb",
         "itemListElement": [
           {
             "@type": "ListItem",
@@ -248,8 +275,8 @@ const SEO = (properties: HelmetProps) => {
             "position": 2,
             "item": {
               "@type": "WebPage",
-              "@id": "${articlePathName}",
-              "url": "${articlePathName}",
+              "@id": "${articlepathName}",
+              "url": "${articlepathName}",
               "name": "${title}"
             }
           }
@@ -257,24 +284,24 @@ const SEO = (properties: HelmetProps) => {
       },
       {
         "@type": "Article",
-        "@id": "${articlePathName}/#article",
+        "@id": "${articlepathName}/#article",
         "isPartOf": {
-          "@id": "${articlePathName}/#webpage"
+          "@id": "${articlepathName}/#webpage"
         },
         "author": {
-          "@id": "${site.siteUrl}/#/schema${authorSlug}"
+          "@id": "${site.siteUrl}/#/schema${authorsSlug}"
         },
         "headline": "${title}",
         "datePublished": "${dateforSEO}",
         "dateModified": "${dateforSEO}",
         "mainEntityOfPage": {
-          "@id": "${articlePathName}/#webpage"
+          "@id": "${articlepathName}/#webpage"
         },
         "publisher": {
           "@id": "${site.siteUrl}/#organization"
         },
         "image": {
-          "@id": "${articlePathName}/#primaryimage"
+          "@id": "${articlepathName}/#primaryimage"
         },
         "inLanguage": "en-US"
       },
@@ -282,7 +309,7 @@ const SEO = (properties: HelmetProps) => {
         "@type": [
           "Person"
         ],
-        "@id": "${site.siteUrl}/#/schema${authorSlug}",
+        "@id": "${site.siteUrl}/#/schema${authorsSlug}",
         "name": "${authorName}",
         "image": {
           "@type": "ImageObject",
@@ -292,9 +319,10 @@ const SEO = (properties: HelmetProps) => {
         },
         "description": "${authorsBio}",
         "sameAs": [
-          "${authorTwitterUrl}",
-          "${authorGithubUrl}",
-          "${authorLinkedinUrl}"
+          "${twitter.url}",
+          "${github.url}",
+          "${linkedin.url}",
+          "${medium.url}"
         ]
       }
     ]
@@ -302,18 +330,15 @@ const SEO = (properties: HelmetProps) => {
 `.replace(/"[^"]+"|(\s)/gm, function (matched, group1) {
     if (!group1) {
       return matched;
+    } else {
+      return '';
     }
-    return '';
-
   });
 
   const schema = isBlogPost ? blogSchema : siteSchema
 
-  const authorTag = authorName !== '' ?
-    <meta name="author" content={authorName}/> : '';
-
   const metaTags = [
-    {charset: 'utf-8'},
+    { charset: 'utf-8' },
     {
       'http-equiv': 'X-UA-Compatible',
       content: 'IE=edge',
@@ -326,60 +351,51 @@ const SEO = (properties: HelmetProps) => {
       name: 'theme-color',
       content: '#fff',
     },
-    {itemprop: 'name', content: title || site.title},
-    {itemprop: 'description', content: description || site.description},
-    {itemprop: 'image', content: image},
-    {name: 'description', content: description || site.description},
+    { itemprop: 'name', content: title || site.title },
+    { itemprop: 'description', content: description || site.description },
+    { itemprop: 'image', content: image },
+    { name: 'description', content: description || site.description },
 
-    {name: 'twitter:card', content: 'summary_large_image'},
-    {name: 'twitter:site', content: site.name},
-    {name: 'twitter:title', content: title || site.title},
-    {name: 'twitter:description', content: description || site.description},
-    {name: 'twitter:creator', content: twitter.url},
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:site', content: site.name },
+    { name: 'twitter:title', content: title || site.title },
+    { name: 'twitter:description', content: description || site.description },
+    { name: 'twitter:creator', content: twitter.url },
     {
       name: 'twitter:image',
       content: image,
     },
 
-    {property: 'og:type', content: 'website'},
-    {property: 'og:title', content: title || site.title},
-    {property: 'og:url', content: currentUrl},
-    {property: 'og:image', content: image},
-    {property: 'og:description', content: description || site.description},
-    {property: 'og:site_name', content: site.name},
+    { property: 'og:type', content: 'website' },
+    { property: 'og:title', content: title || site.title },
+    { property: 'og:url', content: articlepathName || pageUrl },
+    { property: 'og:image', content: image },
+    { property: 'og:description', content: description || site.description },
+    { property: 'og:site_name', content: site.name },
   ];
 
+  if (published) {
+    metaTags.push({ name: 'article:published_time', content: published });
+  }
+
   if (timeToRead) {
-    // @ts-ignore
-    metaTags.push({name: 'twitter:label1', value: 'Reading time'});
-    // @ts-ignore
-    metaTags.push({name: 'twitter:data1', value: `${timeToRead} min read`});
+    metaTags.push({ name: 'twitter:label1', value: 'Reading time' });
+    metaTags.push({ name: 'twitter:data1', value: `${timeToRead} min read` });
   }
 
   return (
     <Helmet
       title={title || site.title}
-      htmlAttributes={{lang: siteLanguage}}
+      htmlAttributes={{ lang: 'en' }}
+      script={themeUIDarkModeWorkaroundScript}
       meta={metaTags}
     >
-      <meta name="image" content={image} />
-      {authorTag}
-
-
       <script type="application/ld+json">{schema}</script>
-      <link rel="icon" type="image/png" sizes="32x32"
-            href={withPrefix('/favicon-32x32.png')}/>
-      <link rel="icon" type="image/png" sizes="16x16"
-            href={withPrefix('/favicon-16x16.png')}/>
-      <link rel="apple-touch-icon" sizes="180x180"
-            href={withPrefix('/apple-touch-icon.png')}/>
+      <script async defer data-domain="larsroettig.dev" src="https://stats.larsroettig.dev/js/index.js"></script>
+      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
       {children}
-      <script async defer data-domain="larsroettig.dev"
-              src="https://plausible.io/js/plausible.js"></script>
     </Helmet>
   );
 };
 
 export default SEO;
-
-SEO.defaultProps = defaultProps;

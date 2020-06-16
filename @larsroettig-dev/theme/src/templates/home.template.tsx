@@ -6,6 +6,7 @@ import Hero from "../components/Hero";
 import SocialIcons from "../components/SocialIcons";
 import Container from "../components/container";
 import SEO from "../components/SEO";
+import {jsx} from "theme-ui";
 
 const CardList = React.lazy(() => import('../components/CardList'));
 const About = React.lazy(() => import('../components/About'));
@@ -18,7 +19,7 @@ const HomePage: HomeTemplate = ({pageContext}) => {
 
   return (
     <Layout>
-      <SEO/>
+      <SEO pathname={'/'} isBlogPost={false}/>
       <Hero/>
       <SocialIcons/>
       <Container>
