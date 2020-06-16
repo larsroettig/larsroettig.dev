@@ -148,6 +148,8 @@ export default {
   },
   '.code-title': {
     backgroundColor: 'rgb(191, 210, 231)',
+    hyphens: 'auto',
+    wordWrap: 'break-word',
     color: 'black',
     fontSize: 0,
     px: 3,
