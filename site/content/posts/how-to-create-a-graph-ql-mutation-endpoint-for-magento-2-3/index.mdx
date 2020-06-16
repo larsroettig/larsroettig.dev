@@ -30,12 +30,11 @@ Before we can start here, you can find the first module that we need ground for 
   </p>
 </Callout>
 
-Create a new php file `app/code/LarsRoettig/GraphQLStorePickup/Model/Resolver/CreatPickUpStore.php`
 
 This Class holds the logic for that endpoint is responsible for any GraphQL call that creates a new pickup store in the Database.
 Every Resolver Class is forced to implements `Magento\Framework\GraphQl\Query\ResolverInterface` to work correctly.
 
-```php:title=Board.php
+```php:title=GraphQLStorePickup/Model/Resolver/CreatPickUpStore.php
 <?php
 
 declare(strict_types=1);
@@ -77,12 +76,10 @@ class CreatPickUpStore implements ResolverInterface
 }
 ```
 
-File `app/code/LarsRoettig/GraphQLStorePickup/Model/CreatePickUpStore.php`:
-
 The second step is to create a service class that will convert a given array to a pickup store and saves them in the database.
 A service class help us to have single small bussiness logic that can be used by differnt other php services.
 
-```php
+```php:title=GraphQLStorePickup/Model/CreatePickUpStore.php
 <?php
 declare(strict_types=1);
 
@@ -193,11 +190,10 @@ class CreatePickUpStore
 
 ```
 
-File `app/code/LarsRoettig/GraphQLStorePickup/etc/schema.graphqls`
 
 This need to be added to the file:
 
-```graphql
+```graphql:title=GraphQLStorePickup/etc/schema.graphqls
 type Mutation {
   createPickUpStores(input: PickUpStoreInput!): PickUpStoreOutput
     @resolver(
