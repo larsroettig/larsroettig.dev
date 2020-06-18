@@ -13,7 +13,9 @@
     "build": "gatsby build",
     "develop": "gatsby develop",
     "start": "gatsby develop",
-    "clean": "gatsby clean"
+    "clean": "gatsby clean",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "peerDependencies": {
     "react": "^16.13.1",
@@ -21,7 +23,7 @@
   },
   "dependencies": {
     "@emotion/core": "^10.0.28",
-    "@emotion/styled":"^10.0.27",
+    "@emotion/styled": "^10.0.27",
     "@mdx-js/mdx": "^1.5.8",
     "@mdx-js/react": "^1.5.9",
     "@theme-ui/components": "^0.3.1",
@@ -48,7 +50,7 @@
     "gatsby-transformer-json": "^2.4.3",
     "lodash.kebabcase": "^4.1.1",
     "mdx-utils": "^0.2.0",
-    "prismjs":"1.20.0",
+    "prismjs": "1.20.0",
     "prism-react-renderer": "^1.0.2",
     "react-helmet": "^6.0.0",
     "react-icons": "^3.10.0",
@@ -58,6 +60,8 @@
     "react-use-clipboard": "1.0.0",
     "react-scroll-up-button": "^1.6.4",
     "theme-ui": "^0.3.1",
-    "typeface-roboto": "0.0.75"
-  }
+    "typeface-roboto": "0.0.75",
+    "snyk": "^1.345.0"
+  },
+  "snyk": true
 }
