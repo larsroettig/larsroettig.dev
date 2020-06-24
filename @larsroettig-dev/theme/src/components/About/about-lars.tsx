@@ -24,7 +24,7 @@ const About = () => (
               Engineer at TechDivision GmbH.
             </p>
             <p>
-              As Magento PWAStudio i try help with any problem or feature
+              As Magento PWA Studio Maintainer i try help with any problem or feature
               request.
             </p>
             <p>
