@@ -31,6 +31,7 @@ const Callout = (properties: React.PropsWithChildren<CalloutProps>) => {
         color: 'rgb(45, 55, 72)',
         padding: '0.5rem 2rem',
         margin: '1rem 0',
+        wordWrap: 'break-word',
         borderLeft: '5px solid',
         ...variantStyles[type],
       }}

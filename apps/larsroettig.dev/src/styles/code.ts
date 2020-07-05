@@ -20,6 +20,7 @@ export default {
   'p > code, li > code': {
     bg: 'rgb(1, 22, 39)',
     color: 'rgb(214, 222, 235)',
+    wordWrap: 'break-word',
     px: 2,
     py: 1,
   },
