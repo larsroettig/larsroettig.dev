@@ -9,7 +9,12 @@
 </a>
 <br/>
 
-Content Structure 
+
+Source Code from the website:
+https://github.com/larsroettig/larsroettig.dev/tree/main/apps/larsroettig.dev
+
+Content Structure: 
+https://github.com/larsroettig/larsroettig.dev/tree/main/apps/larsroettig.dev/content
 ```
   content
     │ ├── authors
