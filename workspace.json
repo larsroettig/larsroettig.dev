@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "projects": {
+    "larsroettig.dev": {
+      "root": "apps/larsroettig.dev",
+      "sourceRoot": "apps/larsroettig.dev/src",
+      "projectType": "application",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/gatsby:build",
+          "options": {
+            "outputPath": "apps/larsroettig.dev/public",
+            "uglify": true,
+            "color": true,
+            "profile": false
+          },
+          "configurations": {
+            "production": {}
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/gatsby:server",
+          "options": {
+            "buildTarget": "larsroettig.dev:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "larsroettig.dev:build:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": [
+              "apps/larsroettig.dev/tsconfig.json",
+              "apps/larsroettig.dev/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/larsroettig.dev/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/larsroettig.dev/jest.config.js",
+            "tsConfig": "apps/larsroettig.dev/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "larsroettig.dev-e2e": {
+      "root": "apps/larsroettig.dev-e2e",
+      "sourceRoot": "apps/larsroettig.dev-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/larsroettig.dev-e2e/cypress.json",
+            "tsConfig": "apps/larsroettig.dev-e2e/tsconfig.e2e.json",
+            "devServerTarget": "larsroettig.dev:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "larsroettig.dev:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/larsroettig.dev-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/larsroettig.dev-e2e/**/*"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/gatsby"
+  },
+  "schematics": {
+    "@nrwl/workspace": {
+      "library": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/cypress": {
+      "cypress-project": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/react": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/next": {
+      "application": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/web": {
+      "application": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/node": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/nx-plugin": {
+      "plugin": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/nest": {
+      "application": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/express": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/gatsby": {
+      "application": {}
+    }
+  },
+  "defaultProject": "larsroettig.dev"
+}

@@ -1,0 +1,395 @@
+---
+title: Getting started with Magento PWA Studio
+date: 2020-03-11
+updated_at: 2020-03-11
+author: Lars Roettig
+description: Is PWA the right technology for me from a bussines point? In the second part, will show how you can build a a own PWA Theme for Magento 2.
+hero: ./PWA_Studio_Start_Teaser.jpg
+---
+
+I want to divide this blog post into two parts. The first part is more from the business side. Is PWA the right technology for me?
+In the second part, I will explain how you can build your own [build your own PWA Theme for Magento 2.](#how-to-create-an-own-pwa-studio-theme)
+
+## Is PWA the right technology for my requirements
+
+As with all software, it should start with the **why**.
+What can a customer or a developer expect from a PWA Studio project?
+In my experience, when new technology appears, stakeholders do not ask about any added business values or requirements. **What** is the advantage of using this new shining technology?
+PWA Studio storefronts enhance the user experience, especially if the target customer group uses smartphones or modern browsers.
+Google page ranking, loading speed, and offline support(to handle short interruptions) are important reasons online businesses should consider PWA storefronts.
+
+Questions online businesses should ask:
+
+- What are the target group of my PWA Project
+- Which features I need for an MVP
+  - Payments
+  - Shipping methods
+  - Language support
+
+As already mentioned in my previous [blog post](https://larsroettig.dev/a-review-of-magento-pwa-studio), it is useful to now with a small project to gather experience with the new PWA.
+But it would be best if you thought about what you need and what helps to earn more money or meet your business goals.
+
+## How to create an own PWA Studio Theme
+
+Basic requisites:
+
+- Essential Experience with React, HTML, CSS, Webpack
+
+From my point of view, there currently two ways to start with a project.
+Project scaffolding default supported by Magento Core Team and Fallback Studio by Jordan Eisenburger. Fallback Studio creates a wrapper around
+[PWA Studio](https://github.com/magento/pwa-studio) .
+It provides a basic fallback structure. So you can develop storefronts that depend on the venia-concept storefront. It also supports scss.
+You can find the project here: [https://github.com/Jordaneisenburger/fallback-studio](https://github.com/Jordaneisenburger/fallback-studio)
+
+### Create a PWA Theme with Scaffolding
+
+In this tutorial, we are going to extend the _Main_ and create our _TopBar_ component as the first element to our site.
+
+PWA Studio comes with a Project scaffolding command, and this is a technique for auto-generating support for your project/theme. Early adopters of the PWA Studio project **forked**, and the Core Team recommends to don’t use this practice. With scaffolding, we should have the opportunity to build our own PWA Theme on top of Magento 2. The full documentation of [https://magento.github.io/pwa-studio/pwa-buildpack/scaffolding/](https://magento.github.io/pwa-studio/pwa-buildpack/scaffolding/)
+
+**Command to create a new Project:**
+
+```
+yarn create @magento/pwa
+```
+
+**It should look like:**
+![Create_PWA](Create_PWA.jpg 'Create_PWA')
+
+#### Overwrite/Extend PWA Studio default component
+
+**Create the library dir and copy main component:**
+
+```bash
+cd myproject
+mkdir -p src/lib/components/
+cp -R node_modules/@magento/venia-ui/lib/components/Main src/lib/components/
+```
+
+**Update Main Component:**
+
+```jsx:title=src/lib/components/Main/main.js {5,6,7}
+import React from 'react';
+import { bool, shape, string } from 'prop-types';
+import { useScrollLock } from '@magento/peregrine';
+import { mergeClasses } from '@magento/venia-ui/lib/classify';
+import Footer from '@magento/venia-ui/lib/components/Footer';
+import Header from '@magento/venia-ui/lib/components/Header';
+
+import defaultClasses from './main.css';
+
+const Main = (props) => {
+  const { children, isMasked } = props;
+  const classes = mergeClasses(defaultClasses, props.classes);
+
+  const rootClass = isMasked ? classes.root_masked : classes.root;
+  const pageClass = isMasked ? classes.page_masked : classes.page;
+
+  useScrollLock(isMasked);
+
+  return (
+    <main className={rootClass}>
+      <div>Static Block for TopBar</div>
+      <Header />
+      <div className={pageClass}>{children}</div>
+      <Footer />
+    </main>
+  );
+};
+
+export default Main;
+
+Main.propTypes = {
+  classes: shape({
+    page: string,
+    page_masked: string,
+    root: string,
+    root_masked: string,
+  }),
+  isMasked: bool,
+};
+```
+
+**Create a overwrite webpack plugin:**
+
+```javascript:title=webpack.config.js
+const path = require('path');
+const glob = require('glob');
+
+module.exports = class NormalModuleOverridePlugin {
+  constructor(moduleOverrideMap) {
+    this.name = 'NormalModuleOverridePlugin';
+    this.moduleOverrideMap = moduleOverrideMap;
+  }
+
+  requireResolveIfCan(id, options = undefined) {
+    try {
+      return require.resolve(id, options);
+    } catch (e) {
+      return undefined;
+    }
+  }
+  resolveModulePath(context, request) {
+    const filePathWithoutExtension = path.resolve(context, request);
+    const files = glob.sync(`${filePathWithoutExtension}@(|.*)`);
+    if (files.length === 0) {
+      throw new Error(`There is no file '${filePathWithoutExtension}'`);
+    }
+    if (files.length > 1) {
+      throw new Error(
+        `There is more than one file '${filePathWithoutExtension}'`
+      );
+    }
+
+    return require.resolve(files[0]);
+  }
+
+  resolveModuleOverrideMap(context, map) {
+    return Object.keys(map).reduce(
+      (result, x) => ({
+        ...result,
+        [require.resolve(x)]:
+          this.requireResolveIfCan(map[x]) ||
+          this.resolveModulePath(context, map[x]),
+      }),
+      {}
+    );
+  }
+
+  apply(compiler) {
+    if (Object.keys(this.moduleOverrideMap).length === 0) {
+      return;
+    }
+
+    const moduleMap = this.resolveModuleOverrideMap(
+      compiler.context,
+      this.moduleOverrideMap
+    );
+
+    compiler.hooks.normalModuleFactory.tap(this.name, (nmf) => {
+      nmf.hooks.beforeResolve.tap(this.name, (resolve) => {
+        if (!resolve) {
+          return;
+        }
+
+        const moduleToReplace = this.requireResolveIfCan(resolve.request, {
+          paths: [resolve.context],
+        });
+        if (moduleToReplace && moduleMap[moduleToReplace]) {
+          resolve.request = moduleMap[moduleToReplace];
+        }
+
+        return resolve;
+      });
+    });
+  }
+};
+```
+
+**Create overwrite mapping file:**
+
+```javascript:title=componentOverrideMapping.js
+module.exports = componentOverride = {
+  [`@magento/venia-ui/lib/components/Main`]: 'src/lib/components/Main',
+};
+```
+
+**Register the webpack plugin:**
+
+```javascript:title=webpack.config.js {8,75}
+const {
+  configureWebpack,
+  graphQL: { getMediaURL, getUnionAndInterfaceTypes },
+} = require('@magento/pwa-buildpack');
+const { DefinePlugin } = require('webpack');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+
+const moduleOverridePlugin = require('./moduleOverrideWebpackPlugin');
+
+const componentOverrideMapping = require('./componentOverrideMapping');
+
+module.exports = async (env) => {
+  const mediaUrl = await getMediaURL();
+
+  global.MAGENTO_MEDIA_BACKEND_URL = mediaUrl;
+
+  const unionAndInterfaceTypes = await getUnionAndInterfaceTypes();
+
+  const { clientConfig, serviceWorkerConfig } = await configureWebpack({
+    context: __dirname,
+    vendor: [
+      '@apollo/react-hooks',
+      'apollo-cache-inmemory',
+      'apollo-cache-persist',
+      'apollo-client',
+      'apollo-link-context',
+      'apollo-link-http',
+      'informed',
+      'react',
+      'react-dom',
+      'react-feather',
+      'react-redux',
+      'react-router-dom',
+      'redux',
+      'redux-actions',
+      'redux-thunk',
+    ],
+    special: {
+      'react-feather': {
+        esModules: true,
+      },
+      '@magento/peregrine': {
+        esModules: true,
+        cssModules: true,
+      },
+      '@magento/venia-ui': {
+        cssModules: true,
+        esModules: true,
+        graphqlQueries: true,
+        rootComponents: true,
+        upward: true,
+      },
+    },
+    env,
+  });
+
+  /**
+   * configureWebpack() returns a regular Webpack configuration object. * You can customize the build by mutating the object here, as in * this example. Since it's a regular Webpack configuration, the object * supports the `module.noParse` option in Webpack, documented here: * https://webpack.js.org/configuration/module/#modulenoparse */ clientConfig.module.noParse = [
+    /braintree\-web\-drop\-in/,
+  ];
+  clientConfig.plugins = [
+    ...clientConfig.plugins,
+    new DefinePlugin({
+      /**
+       * Make sure to add the same constants to * the globals object in jest.config.js. */ UNION_AND_INTERFACE_TYPES: JSON.stringify(
+        unionAndInterfaceTypes
+      ),
+      STORE_NAME: JSON.stringify('Venia'),
+    }),
+    new HTMLWebpackPlugin({
+      filename: 'index.html',
+      template: './template.html',
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true,
+      },
+    }),
+  ];
+
+  clientConfig.plugins.push(new moduleOverridePlugin(componentOverrideMapping));
+
+  return [clientConfig, serviceWorkerConfig];
+};
+```
+
+**Execute Watch Command:**
+
+```bash
+yarn watch
+```
+
+**Result:**
+![Owrite_Test_1](Owrite_Test_1.jpg 'Owrite_Test_1')
+
+#### Create your own PWA Component
+
+```css
+// src/lib/components/TopBar/topbar.css
+.root {
+  background-color: rgb(var(--venia-teal));
+  padding: 0.5rem;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+}
+```
+
+```javascript
+// src/lib/components/TopBar/topbar.js
+import React from 'react';
+import { shape, string } from 'prop-types';
+import { mergeClasses } from '@magento/venia-ui/lib/classify';
+
+import defaultClasses from './topbar.css';
+
+const TopBar = (props) => {
+  const classes = mergeClasses(defaultClasses, props.classes);
+  return <div className={classes.root}>Your first custom react component </div>;
+};
+
+TopBar.propTypes = {
+  classes: shape({
+    root: string,
+  }),
+};
+
+export default TopBar;
+```
+
+```javascript
+// src/lib/components/TopBar/index.js
+export { default } from './topbar';
+```
+
+```javascript {10,23}
+// src/lib/components/Main/main.js
+import React from 'react';
+import { bool, shape, string } from 'prop-types';
+import { useScrollLock } from '@magento/peregrine';
+
+import { mergeClasses } from '@magento/venia-ui/lib/classify';
+import Footer from '@magento/venia-ui/lib/components/Footer';
+import Header from '@magento/venia-ui/lib/components/Header';
+import defaultClasses from './main.css';
+import TopBar from '../TopBar';
+
+const Main = (props) => {
+  const { children, isMasked } = props;
+  const classes = mergeClasses(defaultClasses, props.classes);
+
+  const rootClass = isMasked ? classes.root_masked : classes.root;
+  const pageClass = isMasked ? classes.page_masked : classes.page;
+
+  useScrollLock(isMasked);
+
+  return (
+    <main className={rootClass}>
+      <TopBar />
+      <Header />
+      <div className={pageClass}>{children}</div>
+      <Footer />
+    </main>
+  );
+};
+
+export default Main;
+
+Main.propTypes = {
+  classes: shape({
+    page: string,
+    page_masked: string,
+    root: string,
+    root_masked: string,
+  }),
+  isMasked: bool,
+};
+```
+
+**Result:**
+![Owrite_Test_2](Owrite_Test_2.jpg 'Owrite_Test_2')
+
+### Summary
+
+In my opinion, starting a new PWA Studio project using the scaffolding command is the best approach for setting up a maintainable project.
+
+## Tips and Tricks
+
+**SEO**
+
+For JavaScript applications, it essential to use Server-Side Rendering (SSR). The benefit of using SSR is
+the website content can crawl from crawlers that don't execute JavaScript code. I recommend using tools like [prerender.io](https://prerender.io) or [seosnap.io](https://seosnap.io/).
+When you use SSR to mind those errors, the request still can returns a 200 status code.
+You don't want these to cached by Rendertron or Seosnap your need to set `<meta name="render:status_code" content="404" />` at the appropriate places.
+
+Very nice blog post over
+[Server-Side vs Client-Side Rendering and Changing SEO Practices](https://magento.com/blog/technical/server-side-vs-client-side-rendering-and-changing-seo-practices).

@@ -1,0 +1,11 @@
+{
+  "name": "@larsroettig-dev/theme",
+  "version": "0.0.1",
+  "author": "Lars Roettig <l.roettig@techdivision.com>",
+  "description": "Blog Theme for larsroettitg.dev",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "gatsby": "*"
+  }
+}

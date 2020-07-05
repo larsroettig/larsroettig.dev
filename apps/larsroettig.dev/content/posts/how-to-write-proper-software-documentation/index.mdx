@@ -1,0 +1,137 @@
+---
+title: How to write proper Software Documentation?
+date: 2020-01-06
+updated_at: 2020-01-06
+author: Lars Roettig
+description: Is documentation essential or not, and what we should know about this topic. I share my knowledge to help you write better software documentation.
+hero: ./Software_Documentation_Teaser.jpg
+---
+
+Whenever I speak with developers at conferences
+and they ask about the topic of software documentation, most answer with the following sentence.
+
+<blockquote className="relative p-4 text-xl italic">
+  <p className="mb-4 font-serif">
+    Well, we had to finish it quickly, and there was no time left for
+    documentation.
+  </p>
+</blockquote>
+
+But is documentation essential or not, and what should we know about this topic?
+
+## Why is Software Documentation underestimated?
+
+In my experience, most developers underestimated the **value** of proper software documentation.
+Back in the time as a junior developer, I also took every opportunity to avoid documentation. So the documentation for certain features was the code and me.
+
+As you can imagine, this behavior leads to many problems, and I had to realize that the code alone is not enough.
+Especially if you want to take a vacation or need additional developers in the team, missing documentation is terrible from my point of view.
+
+Unfortunately, writing documentation is not much fun as building new great things for the customer.
+For me, as a developer, documentation, and communication have become one of the essential skills a good software developer needs. But what does it mean to attribute proper documentation, and what is the minimum requirement for us as developers? This question I try to answer in the next section. There are many articles about software documentation and literature. I will summarize things that help me to write better documentation.
+
+### Requirements for effective documentation
+
+The first thing I had to understand was that documentation valuable for your **customer** and **team**.
+This enlightenment helped me to get a better feeling if I have to write documentation.
+
+For new documentation, I try to be a focus on for **whom** I write the documentation.
+A typical project team consists of a vast number of stakeholders, including customer employees, product owners, developers, and many more that are needed to develop a project successfully.
+
+If we define the team in this way, we quickly realize that we need different documentation for the different roles.
+
+- The editor wants to know how to maintain new features.
+- The product owner needs contact persons to coordinate the requirements.
+- The developer needs guidance on how to set up the development environment.
+
+These are just examples to show how different documentation can be.
+With the help of the following questions, you can put yourself in the role of the person.
+
+- Who has to read this documentation?
+- What needs the reader to know about this?
+- What will the reader get done?
+
+In my experience, a little documentation focus on a problem is better than a 70-page document that covers all aspects!
+
+**Variation of questions and example answers:**
+
+- For whom am I writing this documentation?
+  - So that the editors can maintain the content without help
+- What do I want to document?
+  - A process of how an editor can edit or change the content in the system.
+
+**Readable documentation**
+
+From my perspective, software documentation is sometimes not readable, or I can not find any useful information. I search for a way to make my docs better.
+I found Beth Aitman's blog post.
+
+<Callout>
+  <b>Writing effective documentation - the Lead Developer Berlin 2019</b> <br />
+  <a
+    href="https://bethaitman.com/posts/tld-2019/"
+    target="_blank"
+    rel="nofollow noopener noreferrer"
+  >
+    https://bethaitman.com/posts/tld-2019/
+  </a>
+</Callout>
+
+She has a great strategy:
+
+- Write outline first
+- Add useful information in bullet point or not to answering the outline
+- Add more details and than structure it
+
+The full talk you can find at:
+
+<iframe
+  width="100%"
+  height="500"
+  src="https://www.youtube-nocookie.com/embed/R6zeikbTgVc"
+  frameborder="0"
+  allow="autoplay; encrypted-media"
+  allowfullscreen
+></iframe>
+
+**Example of cupcakes backing documentation:**
+
+![Example documentation for making cupcakes](cupcake_sample.jpg 'Example documentation for making cupcakes')
+
+This example shows that a structure helps the user to understand what he gets after backing.
+Add helpful graphics and pictures in the documentation!
+
+**For architecture communication and documentation.**
+
+I started using the templates from arc42.
+This template helps to have an excellent structure for this kind of documentation.
+
+Example Table of Contents by arc42:
+
+1. Introduction and Goals
+1. Architecture Constraints
+1. System Scope and Context
+1. Solution Strategy
+1. Building Block View
+1. Runtime View
+1. Deployment View
+1. Concepts
+1. Design Decisions
+1. Quality Scenarios
+1. Technical Risks
+1. Glossary
+
+**The Templates you can download at:**
+
+- https://arc42.org/download
+
+## Summary
+
+In my opinion, excellent software documentation should have the following characteristics. **Maintainable**, this means easy and quick to adjustable. **Up-to-date and correct** all changes need to be written down. **Understandable and readable** you should use the same terms every time and have explanations of terms.
+**Focus** on the target group of readers answer, the questions of your readers, the documentation should help get things done! **Compact** and **low cost** concentrating on the essential facts for your reader.
+
+### Good resources over software documentation
+
+- https://bethaitman.com/posts/tld-2019/
+- https://www.youtube.com/watch?v=R6zeikbTgVc
+- https://leanpub.com/arc42inpractice
+- https://arc42.org/

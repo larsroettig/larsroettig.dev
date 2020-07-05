@@ -1,0 +1,941 @@
+---
+title: How to create a GraphQL Endpoint for Magento 2.3
+date: 2019-11-03
+author: Lars Roettig
+description: In this Magento 2 GraphQL Tutorial, I will show how to build a GraphQL API endpoint and extend it with a custom filter logic.
+hero: ./GrapQL_Query_Teaser.jpg
+---
+
+In this Magento 2 GraphQL Tutorial, I will show how to build a GraphQL API endpoint and extend it with a custom filter logic.
+Our use case for this Tutorial is a Pickup from Store endpoint what our frontend team needs to create an interactive map.
+The team decided to provide data to the frontend via a GraphQL API.
+
+**In the story we have the following acceptance criteria:**
+
+As a frontend developer, I need an Endpoint to search for the next Pickup Store in a Postcode Area.
+
+- Use a setup script initial import
+- Allow search for Postcode or Name.
+
+**The API will return the following attributes for a Pickup Store:**
+
+<p class="p-2" />
+<table class="table-auto w-full">
+  <thead>
+    <tr class="border bg-gray-100">
+      <th class="px-4 py-2">Attribute Name</th>
+      <th class="px-4 py-2">GraphQL field</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="border px-4 py-2">Name</td>
+      <td class="border px-4 py-2">name</td>
+    </tr>
+    <tr>
+      <td class="border px-4 py-2">Postcode</td>
+      <td class="border px-4 py-2">postcode</td>
+    </tr>
+    <tr>
+      <td class="border px-4 py-2">Street</td>
+      <td class="border px-4 py-2">street</td>
+    </tr>
+    <tr>
+      <td class="border px-4 py-2">Street Number</td>
+      <td class="border px-4 py-2">street_num</td>
+    </tr>
+    <tr>
+      <td class="border px-4 py-2">City</td>
+      <td class="border px-4 py-2">city</td>
+    </tr>
+    <tr>
+      <td class="border px-4 py-2">Longitude</td>
+      <td class="border px-4 py-2">longitude</td>
+    </tr>
+    <tr>
+      <td class="border px-4 py-2">Latitude</td>
+      <td class="border px-4 py-2">latitude</td>
+    </tr>
+  </tbody>
+</table>
+
+**System Requirements:**
+
+- Installed [Magento 2.3](https://devdocs.magento.com/guides/v2.3/install-gde/composer.html)
+- PHP 7.1 | 7.2 | 7.3
+- Mysql 5.6
+
+For local development I recommend to use the development mode:
+
+```bash
+bin/magento deploy:mode:set developer
+```
+
+**Table of Content:**
+
+1. [How to create the basic Magento 2 Module](#1-how-to-create-the-basic-magento-2-module)
+2. [How to add Magento 2 GraphQL specific impelemention](#2-how-to-add-magento-2-graphql-specific-impelemention)
+3. [Github Repo and how to install](#3-installation)
+4. [How to use GraphQL with Magento](#4-how-to-use-graphql)
+
+## 1. How to create the basic Magento 2 Module
+
+**This section is not GraphQL specific and can be applied to any Magento2 Module!**
+In this part, we learn how to creat a new Database table and fill it with some sample data.
+
+- Repository pattern for Magento 2
+- Database Model and Collection
+- How to write a Data Patch for Magento2
+
+Lets start with a new folder under **app/code/LarsRoettig/GraphQLStorePickup** in your installed magento.
+
+```php:title=app/code/LarsRoettig/GraphQLStorePickup/registration.php
+<?php
+
+declare(strict_types=1);
+
+Magento\Framework\Component\ComponentRegistrar::register(
+    Magento\Framework\Component\ComponentRegistrar::MODULE,
+    'LarsRoettig_GraphQLStorePickup',
+    __DIR__
+);
+```
+
+```xml:title=GraphQLStorePickup/etc/module.xml
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+	<module name="LarsRoettig_GraphQLStorePickup" setup_version="1.0.0">
+		<sequence>
+			<module name="Magento_GraphQl"/>
+		</sequence>
+	</module>
+</config>
+```
+
+**3.Create a new database table with db_schema.xml**
+
+The new declarative schema approach allows us as developers to declare the final desired state of the database. Magento adjusts the database automatically without performing redundant operations.
+The declaration will change by running `bin/magento setup:install` or
+`bin/magento setup:upgrade`. We, as Developers, are no longer forced to write PHP scripts for every new version. Additionally, this approach handles that the data is deleted when a module is uninstalled.
+
+<Callout>
+  <p class="p-2">More Information you find here:</p>
+  <p>
+    <a
+      class="text-techdivision p-2"
+      href="https://devdocs.magento.com/guides/v2.3/extension-dev-guide/declarative-schema/"
+      target="_blank"
+      rel="nofollow noopener noreferrer"
+    >
+      https://devdocs.magento.com/guides/v2.3/extension-dev-guide/declarative-schema/
+    </a>
+  </p>
+</Callout>
+
+<p />
+
+```xml:title=GraphQLStorePickup/etc/db_schema.xml
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="pickup_stores" resource="default" engine="innodb" comment="Pick Up Stores">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="name" nullable="true" length="64"/>
+        <column xsi:type="varchar" name="street" nullable="true" length="64"/>
+        <column xsi:type="int" name="street_num" nullable="true"/>
+        <column xsi:type="varchar" name="city" nullable="true" length="64"/>
+        <column xsi:type="varchar" name="postcode" nullable="true" length="10"/>
+        <column xsi:type="decimal" name="latitude"  default="0" scale="4" precision="20" />
+        <column xsi:type="decimal" name="longitude"  default="0" scale="4" precision="20" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+</schema>
+```
+
+```php:title=GraphQLStorePickup/Api/Data/StoreInterface.php
+<?php
+
+declare(strict_types=1);
+
+namespace LarsRoettig\GraphQLStorePickup\Api\Data;
+
+/**
+ * Represents a store and properties
+ *
+ * @api
+ */
+interface StoreInterface
+{
+    /**
+     * Constants for keys of data array. Identical to the name of the getter in snake case
+     */
+    const NAME = 'name';
+    const STREET = 'street';
+    const STREET_NUM = 'street_num';
+    const CITY = 'city';
+    const POSTCODE = 'postcode';
+    const LATITUDE = 'latitude';
+    const LONGITUDE = 'longitude';
+
+    /**#@-*/
+
+    public function getName(): ?string;
+
+    public function setName(?string $name): void;
+
+    public function getStreet(): ?string;
+
+    public function setStreet(?string $street): void;
+
+    public function getStreetNum(): ?int;
+
+    public function setStreetNum(?int $streetNum): void;
+
+    public function getCity(): ?string;
+
+    public function setCity(?string $city): void;
+
+    public function getPostCode(): ?int;
+
+    public function setPostcode(?int $postCode): void;
+
+    public function getLatitude(): ?float;
+
+    public function setLatitude(?float $latitude): void;
+
+    public function getLongitude(): ?float;
+
+    public function setLongitude(?float $longitude): void;
+}
+```
+
+```php:title=GraphQLStorePickup/Model/Store.php
+<?php
+
+declare(strict_types=1);
+
+namespace LarsRoettig\GraphQLStorePickup\Model;
+
+use LarsRoettig\GraphQLStorePickup\Api\Data\StoreInterface;
+use LarsRoettig\GraphQLStorePickup\Model\ResourceModel\Store as StoreResourceModel;
+use Magento\Framework\Model\AbstractExtensibleModel;
+
+class Store extends AbstractExtensibleModel implements StoreInterface
+{
+
+    protected function _construct()
+    {
+        $this->_init(StoreResourceModel::class);
+    }
+
+    public function getName(): ?string
+    {
+        return $this->getData(self::NAME);
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->setData(self::NAME, $name);
+    }
+
+    public function getStreet(): ?string
+    {
+        return $this->getData(self::STREET);
+    }
+
+    public function setStreet(?string $street): void
+    {
+        $this->setData(self::STREET, $street);
+    }
+
+    public function getStreetNum(): ?int
+    {
+        return $this->getData(self::STREET_NUM);
+    }
+
+    public function setStreetNum(?int $streetNum): void
+    {
+        $this->setData(self::STREET_NUM, $streetNum);
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->getData(self::CITY);
+    }
+
+    public function setCity(?string $city): void
+    {
+        $this->setData(self::CITY, $city);
+    }
+
+    public function getPostCode(): ?int
+    {
+        return $this->getData(self::POSTCODE);
+    }
+
+    public function setPostcode(?int $postCode): void
+    {
+        $this->setData(self::POSTCODE, $postCode);
+    }
+
+    public function getLatitude(): ?float
+    {
+        return $this->getData(self::LATITUDE);
+    }
+
+    public function setLatitude(?float $latitude): void
+    {
+        $this->setData(self::LATITUDE, $latitude);
+    }
+
+    public function getLongitude(): ?float
+    {
+        return $this->getData(self::LONGITUDE);
+    }
+
+    public function setLongitude(?float $longitude): void
+    {
+        $this->setData(self::LONGITUDE, $longitude);
+    }
+}
+```
+
+```php:title=GraphQLStorePickup/Model/ResourceModel/Store.php
+<?php
+declare(strict_types=1);
+
+namespace LarsRoettig\GraphQLStorePickup\Model\ResourceModel;
+
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Framework\Model\ResourceModel\PredefinedId;
+
+class Store extends AbstractDb
+{
+    /**
+     * Provides possibility of saving entity with predefined/pre-generated id
+     */
+    use PredefinedId;
+
+    /**#@+
+     * Constants related to specific db layer
+     */
+    private const TABLE_NAME_STOCK = 'pickup_stores';
+    /**#@-*/
+
+    /**
+     * @inheritdoc
+     */
+    protected function _construct()
+    {
+        $this->_init(self::TABLE_NAME_STOCK, 'entity_id');
+    }
+}
+```
+
+```php:title=GraphQLStorePickup/Model/ResourceModel/StoreCollection.php
+<?php
+declare(strict_types=1);
+
+namespace LarsRoettig\GraphQLStorePickup\Model\ResourceModel;
+
+use LarsRoettig\GraphQLStorePickup\Model\ResourceModel\Store as StoreResourceModel;
+use LarsRoettig\GraphQLStorePickup\Model\Store as StoreModel;
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+
+class StoreCollection extends AbstractCollection
+{
+    /**
+     * @inheritdoc
+     */
+    protected function _construct()
+    {
+        $this->_init(StoreModel::class, StoreResourceModel::class);
+    }
+}
+```
+
+```php:title=GraphQLStorePickup/Api/StoreRepositoryInterface.php
+<?php
+declare(strict_types=1);
+
+namespace LarsRoettig\GraphQLStorePickup\Api;
+
+use LarsRoettig\GraphQLStorePickup\Api\Data\StoreInterface;
+use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\SearchResultsInterface;
+
+/**
+ * @api
+ */
+interface StoreRepositoryInterface
+{
+    /**
+     * Save the Store data.
+     *
+     * @param \Magento\InventoryApi\Api\Data\SourceInterface $source
+     * @return void
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     */
+    public function save(StoreInterface $store): void;
+
+    /**
+     * Find Stores by given SearchCriteria
+     * SearchCriteria is not required because load all stores is useful case
+     *
+     * @param \Magento\Framework\Api\SearchCriteriaInterface|null $searchCriteria
+     * @return \Magento\Framework\Api\SearchResultsInterface
+     */
+    public function getList(SearchCriteriaInterface $searchCriteria = null): SearchResultsInterface;
+}
+```
+
+A repository is an architecture layer that handles communication between the application and the data source (DataBase).
+Repository Pattern helps to switch to another data source or making structural changes to the existing data source.
+
+For all my repositories, usually, i have an interface that helps to decouple the implementation.
+
+```php:title=GraphQLStorePickup/Model/StoreRepository.ph
+<?php
+declare(strict_types=1);
+
+namespace LarsRoettig\GraphQLStorePickup\Model;
+
+use LarsRoettig\GraphQLStorePickup\Api\Data\StoreInterface;
+use LarsRoettig\GraphQLStorePickup\Api\StoreRepositoryInterface;
+use LarsRoettig\GraphQLStorePickup\Model\ResourceModel\Store as StoreResourceModel;
+use LarsRoettig\GraphQLStorePickup\Model\ResourceModel\StoreCollection;
+use LarsRoettig\GraphQLStorePickup\Model\ResourceModel\StoreCollectionFactory;
+use Magento\Framework\Api\Search\SearchCriteriaBuilder;
+use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
+use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\SearchResultsInterface;
+use Magento\Framework\Api\SearchResultsInterfaceFactory;
+use Magento\Framework\Exception\CouldNotSaveException;
+
+class StoreRepository implements StoreRepositoryInterface
+{
+    /**
+     * @var StoreCollectionFactory
+     */
+    private $storeCollectionFactory;
+    /**
+     * @var CollectionProcessorInterface
+     */
+    private $collectionProcessor;
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    private $searchCriteriaBuilder;
+    /**
+     * @var SearchResultsInterfaceFactory
+     */
+    private $storeSearchResultsInterfaceFactory;
+    /**
+     * @var StoreResourceModel
+     */
+    private $storeResourceModel;
+
+    public function __construct(
+        StoreCollectionFactory $storeCollectionFactory,
+        CollectionProcessorInterface $collectionProcessor,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        SearchResultsInterfaceFactory $storeSearchResultsInterfaceFactory,
+        StoreResourceModel $storeResourceModel
+    ) {
+        $this->storeCollectionFactory = $storeCollectionFactory;
+        $this->collectionProcessor = $collectionProcessor;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->storeSearchResultsInterfaceFactory = $storeSearchResultsInterfaceFactory;
+        $this->storeResourceModel = $storeResourceModel;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getList(SearchCriteriaInterface $searchCriteria = null): SearchResultsInterface
+    {
+        /** @var StoreCollection $storeCollection */
+        $storeCollection = $this->storeCollectionFactory->create();
+        if (null === $searchCriteria) {
+            $searchCriteria = $this->searchCriteriaBuilder->create();
+        } else {
+            $this->collectionProcessor->process($searchCriteria, $storeCollection);
+        }
+        /** @var SearchResultsInterface $searchResult */
+        $searchResult = $this->storeSearchResultsInterfaceFactory->create();
+        $searchResult->setItems($storeCollection->getItems());
+        $searchResult->setTotalCount($storeCollection->getSize());
+        $searchResult->setSearchCriteria($searchCriteria);
+
+        return $searchResult;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function save(StoreInterface $store): void
+    {
+        try {
+            $this->storeResourceModel->save($store);
+        } catch (\Exception $e) {
+            throw new CouldNotSaveException(__('Could not save Source'), $e);
+        }
+    }
+}
+
+```
+
+**9. Create di.xml to link interface to impelemention **
+
+```xml:title=GraphQLStorePickup/etc/di.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="LarsRoettig\GraphQLStorePickup\Api\Data\StoreInterface" type="LarsRoettig\GraphQLStorePickup\Model\Store"/>
+    <preference for="LarsRoettig\GraphQLStorePickup\Api\StoreRepositoryInterface" type="\LarsRoettig\GraphQLStorePickup\Model\StoreRepository"/>
+</config>
+```
+
+**10. Setup Patch with Sample Data **
+
+Since Magento 2.3 we have the possibility to define data and schema patches. This approach allows to have better controll
+over data changes.
+
+<div className={'border-l-4 p-2 bg-gray-200 text-lg'}>
+  <p className={'p-2'}>
+    Magento executes updates from the db_schema.xml before the data and schema
+    patches.{' '}
+  </p>
+</div>
+
+<div className={'border-l-4 p-2 bg-orange-300 text-lg'}>
+  <p className={'p-2'}>
+    Optional Step: In Step this we will generate Sample Data This code should be
+    not shipped to production!
+  </p>
+</div>
+
+```php:title=GraphQLStorePickup/Setup/Patch/Data/InitializePickUpStores.php
+<?php
+
+declare(strict_types=1);
+
+namespace LarsRoettig\GraphQLStorePickup\Setup\Patch\Data;
+
+use LarsRoettig\GraphQLStorePickup\Api\Data\StoreInterface;
+use LarsRoettig\GraphQLStorePickup\Api\Data\StoreInterfaceFactory;
+use LarsRoettig\GraphQLStorePickup\Api\StoreRepositoryInterface;
+use Magento\Framework\Api\DataObjectHelper;
+use Magento\Framework\Setup\ModuleDataSetupInterface;
+use Magento\Framework\Setup\Patch\DataPatchInterface;
+
+class InitializePickUpStores implements DataPatchInterface
+{
+    /**
+     * @var ModuleDataSetupInterface
+     */
+    private $moduleDataSetup;
+    /**
+     * @var StoreInterfaceFactory
+     */
+    private $storeInterfaceFactory;
+    /**
+     * @var StoreRepositoryInterface
+     */
+    private $storeRepository;
+    /**
+     * @var DataObjectHelper
+     */
+    private $dataObjectHelper;
+
+    /**
+     * EnableSegmentation constructor.
+     *
+     * @param ModuleDataSetupInterface $moduleDataSetup
+     */
+    public function __construct(
+        ModuleDataSetupInterface $moduleDataSetup,
+        StoreInterfaceFactory $storeInterfaceFactory,
+        StoreRepositoryInterface $storeRepository,
+        DataObjectHelper $dataObjectHelper
+    ) {
+        $this->moduleDataSetup = $moduleDataSetup;
+        $this->storeInterfaceFactory = $storeInterfaceFactory;
+        $this->storeRepository = $storeRepository;
+        $this->dataObjectHelper = $dataObjectHelper;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getDependencies()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     * @throws Exception
+     * @throws Exception
+     */
+    public function apply()
+    {
+        $this->moduleDataSetup->startSetup();
+        $maxStore = 50;
+
+        $citys = ['Rosenheim', 'Kolbermoor', 'München', 'Erfurt', 'Berlin'];
+
+        for ($i = 1; $i <= $maxStore; $i++) {
+
+            $storeData = [
+                StoreInterface::NAME => 'Brick and Mortar ' . $i,
+                StoreInterface::STREET => 'Test Street' . $i,
+                StoreInterface::STREET_NUM => $i * random_int(1, 100),
+                StoreInterface::CITY => $citys[random_int(0, 4)],
+                StoreInterface::POSTCODE => $i * random_int(1000, 9999),
+                StoreInterface::LATITUDE => random_int(4757549, 5041053) / 100000,
+                StoreInterface::LONGITUDE => random_int(1157549, 1341053) / 100000,
+            ];
+            /** @var StoreInterface $store */
+            $store = $this->storeInterfaceFactory->create();
+            $this->dataObjectHelper->populateWithArray($store, $storeData, StoreInterface::class);
+            $this->storeRepository->save($store);
+        }
+
+        $this->moduleDataSetup->endSetup();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAliases()
+    {
+        return [];
+    }
+}
+
+```
+
+## 2. How to add Magento 2 GraphQL specific impelemention
+
+**1.Create GraphQL Schema File **
+
+The _schema.graphql_ contains the following information:
+
+- Defines the structure of queries and mutations.
+- Determines which attributes can be used for input and output in GraphQL queries and mutations. Requests and responses contain separate lists of valid attributes.
+- Points to the resolvers that verify and process the input data and response.
+- Serves as the source for displaying the schema in a GraphQL browser.
+- Defines which objects are cached.
+
+<div className={'border-l-4 p-2 text-lg'}>
+  <p className={'p-2'}>Full Magento Dokumentation: </p>
+  <p>
+    <a
+      class="text-techdivision p-2"
+      href="https://devdocs.magento.com/guides/v2.3/graphql/develop/create-graphqls-file.html"
+      target="_blank"
+      rel="nofollow noopener noreferrer"
+    >
+      https://devdocs.magento.com/guides/v2.3/graphql/develop/create-graphqls-file.html
+    </a>
+  </p>
+</div>
+
+<p class="p-2" />
+
+```graphql:title=GraphQLStorePickup/etc/schema.graphqls
+type Query {
+  pickUpStores(
+    filter: PickUpStoresFilterInput @doc(description: "")
+    pageSize: Int = 5
+      @doc(description: "How many items should show on the page")
+    currentPage: Int = 1
+      @doc(description: "Allows to ussing paging it start with 1")
+  ): pickUpStoresOutput
+    @resolver(
+      class: "\\LarsRoettig\\GraphQLStorePickup\\Model\\Resolver\\PickUpStores"
+    )
+    @doc(description: "The Impelemention to resolve PickUp stores")
+}
+
+input PickUpStoresFilterInput {
+  name: FilterTypeInput @doc(description: "")
+  postcode: FilterTypeInput @doc(description: "")
+  latitude: FilterTypeInput @doc(description: "")
+  longitude: FilterTypeInput @doc(description: "")
+  or: PickUpStoresFilterInput
+}
+
+type pickUpStoresOutput {
+  total_count: Int @doc(description: "")
+  items: [PickUpStore] @doc(description: "")
+}
+
+type PickUpStore {
+  name: String @doc(description: "")
+  street: String @doc(description: "")
+  street_num: Int @doc(description: "")
+  city: String @doc(description: "")
+  postcode: String @doc(description: "")
+  latitude: Float @doc(description: "")
+  longitude: Float @doc(description: "")
+}
+```
+
+**2.Create GraphQL Resolver File)**
+
+This PHP Class represents the Service implementation of our
+GraphQL Query Endpoint `pickUpStores`. This Class is called in every query to `pickUpStores`.
+Every resolver needs to implement the `Magento\Framework\GraphQl\Query\ResolverInterface` to work correctly.
+
+```php:title=GraphQLStorePickup/Model/Resolver/PickUpStores.php
+<?php
+
+declare(strict_types=1);
+
+namespace LarsRoettig\GraphQLStorePickup\Model\Resolver;
+
+use LarsRoettig\GraphQLStorePickup\Api\StoreRepositoryInterface;
+use LarsRoettig\GraphQLStorePickup\Model\Store\GetList;
+use Magento\Framework\GraphQl\Config\Element\Field;
+use Magento\Framework\GraphQl\Exception\GraphQlInputException;
+use Magento\Framework\GraphQl\Query\Resolver\Argument\SearchCriteria\Builder as SearchCriteriaBuilder;
+use Magento\Framework\GraphQl\Query\ResolverInterface;
+use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
+
+class PickUpStores implements ResolverInterface
+{
+
+    /**
+     * @var GetListInterface
+     */
+    private $storeRepository;
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    private $searchCriteriaBuilder;
+
+    /**
+     * PickUpStoresList constructor.
+     * @param GetList $storeRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     */
+    public function __construct(StoreRepositoryInterface $storeRepository, SearchCriteriaBuilder $searchCriteriaBuilder)
+    {
+        $this->storeRepository = $storeRepository;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    {
+
+        $this->vaildateArgs($args);
+
+        $searchCriteria = $this->searchCriteriaBuilder->build('pickup_stores', $args);
+        $searchCriteria->setCurrentPage($args['currentPage']);
+        $searchCriteria->setPageSize($args['pageSize']);
+        $searchResult = $this->storeRepository->getList($searchCriteria);
+
+        return [
+            'total_count' => $searchResult->getTotalCount(),
+            'items' => $searchResult->getItems(),
+        ];
+    }
+
+    /**
+     * @param array $args
+     * @throws GraphQlInputException
+     */
+    private function vaildateArgs(array $args): void
+    {
+        if (isset($args['currentPage']) && $args['currentPage'] < 1) {
+            throw new GraphQlInputException(__('currentPage value must be greater than 0.'));
+        }
+
+        if (isset($args['pageSize']) && $args['pageSize'] < 1) {
+            throw new GraphQlInputException(__('pageSize value must be greater than 0.'));
+        }
+    }
+}
+
+```
+
+**3.Create Dependencies Injection File (di.xml)**
+
+We need this file to inject our FilterArgument Class that maps the
+graph attribute for filtering. Currently there is no general implementation.
+
+```xml:title=GraphQLStorePickup/etc/di.xml
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="LarsRoettig\GraphQLStorePickup\Api\Data\StoreInterface" type="LarsRoettig\GraphQLStorePickup\Model\Store"/>
+    <preference for="LarsRoettig\GraphQLStorePickup\Api\StoreRepositoryInterface" type="\LarsRoettig\GraphQLStorePickup\Model\StoreRepository"/>
+    <type name="Magento\Framework\GraphQl\Query\Resolver\Argument\FieldEntityAttributesPool">
+        <arguments>
+            <argument name="attributesInstances" xsi:type="array">
+                <item name="pickup_stores" xsi:type="object">
+                    \LarsRoettig\GraphQLStorePickup\Model\Resolver\FilterArgument
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>
+```
+
+<p class="p-2" />
+
+**4. Create FilterArgument File **
+
+This Class is needed to add our filter fields as attributes to Magento's argument resolver (`Magento\Framework\GraphQl\Query\Resolver\Argument\FieldEntityAttributesPool`).
+Currently, there is no implementation in the Magento core that will do it automatically.
+
+```php:title=GraphQLStorePickup/Model/Resolver/FilterArgument.php
+<?php
+declare(strict_types=1);
+
+namespace LarsRoettig\GraphQLStorePickup\Model\Resolver;
+
+use Magento\Framework\GraphQl\Config\Element\Field;
+use Magento\Framework\GraphQl\ConfigInterface;
+use Magento\Framework\GraphQl\Query\Resolver\Argument\FieldEntityAttributesInterface;
+
+class FilterArgument implements FieldEntityAttributesInterface
+{
+    /** @var ConfigInterface */
+    private $config;
+
+    public function __construct(ConfigInterface $config)
+    {
+        $this->config = $config;
+    }
+
+    public function getEntityAttributes(): array
+    {
+        $fields = [];
+        /** @var Field $field */
+        foreach ($this->config->getConfigElement('PickUpStore')->getFields() as $field) {
+            $fields[$field->getName()] = '';
+        }
+
+        return array_keys($fields);
+    }
+}
+```
+
+### 3. Installation:
+
+<p />
+
+```bash
+bin/magento module:enable LarsRoettig_GraphQLStorePickup
+bin/magento setup:db-declaration:generate-whitelist --module-name=LarsRoettig_GraphQLStorePickup
+bin/magento setup:upgrade
+```
+
+<Callout>
+  <p className={'p-2'}> The repo can founded at Github: </p>
+  <p class="text-techdivision p-2">
+    {' '}
+    <a
+      href="https://github.com/larsroettig/module-graphqlstorepickup"
+      target="_blank"
+      rel="nofollow noopener noreferrer"
+    >
+      https://github.com/larsroettig/module-graphqlstorepickup
+    </a>
+  </p>
+</Callout>
+
+## 4. How to use GraphQL
+
+**Test for your new endpoint (Client Sample Call)**
+
+I recommend to use [Altair GraphQL Client](https://altair.sirmuel.design/) as testing client tool.
+
+If you like Pto use Postman, please use the following link:
+https://learning.getpostman.com/docs/postman/sending-api-requests/graphql/
+
+<Callout type={'warning'}>
+  <p>
+  <b>Attention the Url https://your_domain.test/graphql
+   work only with an valid GraphQL-Request!
+  </b>
+  </p>
+
+The following error occurs for a invalid Request:
+
+`{"errors":[{"message":Syntax Error: Unexpected <EOF>","category":"graphql","locations":[{"line":1,"column":1}]}]}`
+
+</Callout>
+
+![GraphQL_Playground Sample](GraphQL_Playground.jpg 'GrapQL Editor')
+
+**Simple GraphQL-Query without an filter:**
+
+```graphql
+{
+  pickUpStores {
+    total_count
+    items {
+      name
+      street
+      street_num
+      postcode
+    }
+  }
+}
+```
+
+** GraphQL-Query with a filter:**
+
+```graphql
+{
+  pickUpStores(
+    filter: { name: { like: "Brick and Mortar 1%" } }
+    pageSize: 2
+    currentPage: 1
+  ) {
+    total_count
+    items {
+      name
+      street
+      postcode
+    }
+  }
+}
+```
+
+**Complex GraphQL-Query with a longitude filter:**
+
+```graphql
+{
+  pickUpStores(
+    filter: { longitude: { gt: "11.66" } }
+    pageSize: 2
+    currentPage: 1
+  ) {
+    total_count
+
+    items {
+      name
+      street
+      postcode
+      latitude
+      longitude
+    }
+  }
+}
+```
+
+## Summary
+
+In conclusion,let me just say that we were able to add a new GraphQL Endpoint to Magento 2 within 15 minutes.
+From my point of view the response times from the API are slow.
+As far as I know the core team wants to improve the perfomance 2.4.x release.

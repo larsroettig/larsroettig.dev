@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Reacticon Conference",
+    "website": "https://reacticon.org/",
+    "image": {
+      "desktop": "./images/reaction_conf.png",
+      "mobile": "./images/reaction_conf.png"
+    },
+    "alt": "Reacticon Conference Logo",
+    "follow": true
+  }
+]

@@ -1,0 +1,111 @@
+---
+title: Enable Notify me when this product is in stock in Magento 2
+date: 2018-12-10
+updated_at: 2019-11-11
+author: Lars Roettig
+description: In this tutorial, I show how to enable Notify me when the product back is in stock for Magento 2
+hero: ./Teaser.jpg
+---
+
+<Callout type={'info'}>
+  <p className={'p-2'}>
+    This feature is available in Magento 2 Open Source, Commerce and B2B
+  </p>
+</Callout>
+
+As Merchant, you can enable this feature for registered customers.
+It allowed subscribing to two types of alerts, first is price change alert, and the sound is in-stock alert.
+For each alert example, you can choose a different email template.
+
+### Allow show Display Out of Stock Products
+
+{' '}
+<ul class="list-reset mdx-bread">
+  <li>Stores</li>
+  <li>
+    <span class="mx-2">/</span>
+  </li>
+  <li>Catalog</li>
+  <li>
+    <span class="mx-2">/</span>
+  </li>
+  <li>Inventory</li>
+  <li>
+    <span class="mx-2">/</span>
+  </li>
+  <li>
+    <b>Display Out of Stock Products Option</b>
+  </li>
+</ul>
+
+![Magento backend display out of stock products option](display_out_of_stock_products_option.jpg)
+
+### Enable Allow alert when product comes back in stock
+
+{' '}
+<ul class="list-reset mdx-bread">
+  <li>Stores</li>
+  <li>
+    <span class="mx-2">/</span>
+  </li>
+  <li>Catalog</li>
+  <li>
+    <span class="mx-2">/</span>
+  </li>
+  <li>Catalog</li>
+  <li>
+    <span class="mx-2">/</span>
+  </li>
+  <li>Product Alerts</li>
+  <li>
+    <span class="mx-2">/</span>
+  </li>
+  <li>
+    <b>Allow Alert When Product Comes Back in Stock</b>
+  </li>
+</ul>
+
+![Enable Allow alert when product comes back in stock](allow_alert_when_product_comes_back_in_Stock.jpg)
+
+### Optional Step
+
+With the Frequency settings, it possible to change how often Magento checks for changes that require alerts sent to the subscribers.
+
+{' '}
+<ul class="list-reset mdx-bread">
+  <li>Stores</li>
+  <li>
+    <span class="mx-2">/</span>
+  </li>
+  <li>Catalog</li>
+  <li>
+    <span class="mx-2">/</span>
+  </li>
+  <li>Catalog</li>
+  <li>
+    <span class="mx-2">/</span>
+  </li>
+  <li> Product Alerts Run Settings</li>
+  <li>
+    <span class="mx-2">/</span>
+  </li>
+  <li>
+    <b>Frequency</b>
+  </li>
+</ul>
+
+The in-stock alert setting creates a link called “Notify me when this product is in stock” for every product that is out of stock. Customers can click the link to subscribe to the alert. When the product is back in stock, customers receive an email notification that the product is available.
+
+<Callout type={'warning'}>
+  <p className={'p-2'}>
+    Attention the Mail is only sent by the configured time (Magento cron job).
+  </p>
+</Callout>
+
+Products with alerts have a Product Alerts sections in the Product Information panel that lists the customers who have subscribed to an alarm.
+![mail_backend](mail_backend.jpg)
+
+**Links:**
+
+- [Magento 1 Documentation Product Alerts Magento 1](http://docs.magento.com/m1/ce/user_guide/catalog/inventory-product-alert.html)
+- [Documentation Scheduling Product Alerts](http://docs.magento.com/m1/ce/user_guide/catalog/inventory-product-alert-run-settings.html)

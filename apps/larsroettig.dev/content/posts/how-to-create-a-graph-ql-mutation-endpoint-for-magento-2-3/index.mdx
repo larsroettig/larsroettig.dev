@@ -1,0 +1,341 @@
+---
+title: How to create a GraphQL Mutation Endpoint for Magento 2.3
+date: 2019-11-25
+author: Lars Roettig
+description: How to build a Mutation Endpoint with GraphQL for Magento 2.3. In this tutorial, we will extend our query endpoint with saving logic.
+hero: ./GrapQL_Mutation_Teaser.jpg
+---
+
+In my last Magento 2 tutorial, I showed how to build a basic GraphQL module with filtering.
+The primary purpose of GraphQL is to retrieve data (query), but every complete data exchange format needs a way to change server-based data (mutations).
+Therefore I want to show now how we can change data or create new pickup stores via the frontend.
+
+Currently, the Magento 2 GraphQL Endpoint supports only access controls based on customers. This GraphQL will only allow a query
+on the customer data if the customer’s token must proived in the header section.
+
+Since I would like to show only exemplarily how such a thing could look, I did without access control!
+
+Before we can start here, you can find the first module that we need ground for this tutorial.
+
+<Callout>
+  <p>
+    <a href="https://larsroettig.dev/how-to-create-a-graph-ql-endpoint-for-magento-2-3">
+      How to create a GraphQL Endpoint for Magento 2.3
+    </a>
+  </p>
+  <p>
+    <a href="https://github.com/larsroettig/module-graphqlstorepickup/tree/1.0-develop">
+      Github Repo
+    </a>
+  </p>
+</Callout>
+
+This Class holds the logic for that endpoint is responsible for any GraphQL call that creates a new pickup store in the Database.
+Every Resolver Class is forced to implements `Magento\Framework\GraphQl\Query\ResolverInterface` to work correctly.
+
+```php:title=GraphQLStorePickup/Model/Resolver/CreatPickUpStore.php
+<?php
+
+declare(strict_types=1);
+
+namespace LarsRoettig\GraphQLStorePickup\Model\Resolver;
+
+use LarsRoettig\GraphQLStorePickup\Model\CreatePickUpStore as CreatPickUpStoreService;
+use Magento\Framework\GraphQl\Config\Element\Field;
+use Magento\Framework\GraphQl\Exception\GraphQlInputException;
+use Magento\Framework\GraphQl\Query\ResolverInterface;
+use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
+
+class CreatPickUpStore implements ResolverInterface
+{
+    /**
+     * @var CreatPickUpStoreService
+     */
+    private $creatPickUpStore;
+
+    /**
+     * @param CreatPickUpStore $creatPickUpStore
+     */
+    public function __construct(CreatPickUpStoreService $creatPickUpStore)
+    {
+        $this->creatPickUpStore = $creatPickUpStore;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    {
+        if (empty($args['input']) || !is_array($args['input'])) {
+            throw new GraphQlInputException(__('"input" value should be specified'));
+        }
+
+        return ['pick_up_store' => $this->creatPickUpStore->execute($args['input'])];
+    }
+}
+```
+
+The second step is to create a service class that will convert a given array to a pickup store and saves them in the database.
+A service class help us to have single small bussiness logic that can be used by differnt other php services.
+
+```php:title=GraphQLStorePickup/Model/CreatePickUpStore.php
+<?php
+declare(strict_types=1);
+
+namespace LarsRoettig\GraphQLStorePickup\Model;
+
+use LarsRoettig\GraphQLStorePickup\Api\Data\StoreInterface;
+use LarsRoettig\GraphQLStorePickup\Api\Data\StoreInterfaceFactory;
+use LarsRoettig\GraphQLStorePickup\Api\StoreRepositoryInterface;
+use Magento\Framework\Api\DataObjectHelper;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\GraphQl\Exception\GraphQlInputException;
+
+class CreatePickUpStore
+{
+
+    /**
+     * @var DataObjectHelper
+     */
+    private $dataObjectHelper;
+    /**
+     * @var StoreRepositoryInterface
+     */
+    private $storeRepository;
+    /**
+     * @var StoreInterfaceFactory
+     */
+    private $storeFactory;
+
+    /**
+     * @param DataObjectHelper $dataObjectHelper
+     * @param StoreRepositoryInterface $storeRepository
+     * @param StoreInterfaceFactory $storeInterfaceFactory
+     */
+    public function __construct(
+        DataObjectHelper $dataObjectHelper,
+        StoreRepositoryInterface $storeRepository,
+        StoreInterfaceFactory $storeInterfaceFactory
+    ) {
+        $this->dataObjectHelper = $dataObjectHelper;
+        $this->storeRepository = $storeRepository;
+        $this->storeFactory = $storeInterfaceFactory;
+    }
+
+    /**
+     * @param array $data
+     * @return StoreInterface
+     * @throws GraphQlInputException
+     */
+    public function execute(array $data): StoreInterface
+    {
+        try {
+            $this->vaildateData($data);
+            $store = $this->saveStore($this->createStore($data));
+        } catch (\Exception $e) {
+            throw new GraphQlInputException(__($e->getMessage()));
+        }
+
+        return $store;
+    }
+
+    /**
+     * Guard function to handle bad request.
+     * @param array $data
+     * @throws LocalizedException
+     */
+    private function vaildateData(array $data)
+    {
+        if (!isset($data[StoreInterface::NAME])) {
+            throw new LocalizedException(__('Name must be set'));
+        }
+    }
+
+    /**
+     * Persists the given store in the data base.
+     * +
+     * @param StoreInterface $store
+     * @return StoreInterface
+     * @throws CouldNotSaveException
+     */
+    private function saveStore(StoreInterface $store): StoreInterface
+    {
+        $this->storeRepository->save($store);
+
+        return $store;
+    }
+
+    /**
+     * Create a store dto by given data array.
+     *
+     * @param array $data
+     * @return StoreInterface
+     * @throws CouldNotSaveException
+     */
+    private function createStore(array $data): StoreInterface
+    {
+        /** @var StoreInterface $store */
+        $store = $this->storeFactory->create();
+        $this->dataObjectHelper->populateWithArray(
+            $store,
+            $data,
+            StoreInterface::class
+        );
+
+        return $store;
+    }
+}
+
+```
+
+This need to be added to the file:
+
+```graphql:title=GraphQLStorePickup/etc/schema.graphqls
+type Mutation {
+  createPickUpStores(input: PickUpStoreInput!): PickUpStoreOutput
+    @resolver(
+      class: "\\LarsRoettig\\GraphQLStorePickup\\Model\\Resolver\\CreatPickUpStore"
+    )
+    @doc(description: "Create a new pickup store")
+}
+
+type PickUpStoreOutput {
+  pick_up_store: PickUpStore!
+}
+
+input PickUpStoreInput {
+  name: String @doc(description: "")
+  street: String @doc(description: "")
+  street_num: Int @doc(description: "")
+  city: String @doc(description: "")
+  postcode: String @doc(description: "")
+  latitude: Float @doc(description: "")
+  longitude: Float @doc(description: "")
+}
+```
+
+Full File:
+
+```graphql
+type Query {
+  pickUpStores(
+    filter: PickUpStoresFilterInput @doc(description: "")
+    pageSize: Int = 5
+      @doc(description: "How many items should show on the page")
+    currentPage: Int = 1
+      @doc(description: "Allows to ussing paging it start with 1")
+  ): PickUpStoresOutput
+    @resolver(
+      class: "\\LarsRoettig\\GraphQLStorePickup\\Model\\Resolver\\PickUpStores"
+    )
+    @doc(description: "Allow to query for a pickup store.")
+}
+
+type Mutation {
+  createPickUpStores(input: PickUpStoreInput!): PickUpStoreOutput
+    @resolver(
+      class: "\\LarsRoettig\\GraphQLStorePickup\\Model\\Resolver\\CreatPickUpStore"
+    )
+    @doc(description: "Create a new pickup store")
+}
+
+type PickUpStoreOutput {
+  pick_up_store: PickUpStore!
+}
+
+input PickUpStoreInput {
+  name: String @doc(description: "")
+  street: String @doc(description: "")
+  street_num: Int @doc(description: "")
+  city: String @doc(description: "")
+  postcode: String @doc(description: "")
+  latitude: Float @doc(description: "")
+  longitude: Float @doc(description: "")
+}
+
+input PickUpStoresFilterInput {
+  name: FilterTypeInput @doc(description: "")
+  postcode: FilterTypeInput @doc(description: "")
+  street: FilterTypeInput @doc(description: "")
+  street_num: FilterTypeInput @doc(description: "")
+  city: FilterTypeInput @doc(description: "")
+  latitude: FilterTypeInput @doc(description: "")
+  longitude: FilterTypeInput @doc(description: "")
+  or: PickUpStoresFilterInput
+}
+
+type PickUpStoresOutput {
+  total_count: Int @doc(description: "")
+  items: [PickUpStore] @doc(description: "")
+}
+
+type PickUpStore {
+  entity_id: Int @doc(description: "")
+  name: String @doc(description: "")
+  street: String @doc(description: "")
+  street_num: Int @doc(description: "")
+  city: String @doc(description: "")
+  postcode: String @doc(description: "")
+  latitude: Float @doc(description: "")
+  longitude: Float @doc(description: "")
+}
+```
+
+### 3. Installation:
+
+```bash
+bin/magento module:enable LarsRoettig_GraphQLStorePickup
+bin/magento setup:db-declaration:generate-whitelist --module-name=LarsRoettig_GraphQLStorePickup
+bin/magento setup:upgrade
+```
+
+<div className={'border-l-4 p-2 bg-gray-200 text-lg'}>
+  <p className={'p-2'}> The repo bramch can founded at Github: </p>
+  <p class="text-techdivision p-2">
+    {' '}
+    <a
+      href="https://github.com/larsroettig/module-graphqlstorepickup/tree/2.0-develop"
+      target="_blank"
+      rel="nofollow noopener noreferrer"
+    >
+      https://github.com/larsroettig/module-graphqlstorepickup/tree/2.0-develop
+    </a>
+  </p>
+</div>
+
+#### How to call your GraphQL Endpoint
+
+<p class="p-2" />
+
+<div className={'border-l-4 p-2 bg-orange-300 text-lg'}>
+  <p className={'p-2'}>
+    Attention the Url https://your_domain.test/graphql work only with an valid
+    GraphQL-Request!{' '}
+  </p>
+</div>
+
+<p class="p-2" />
+
+![GrapQL Mutation](graphql-playground_mutation.jpg 'GrapQL Mutation Query')
+
+**GraphQL-Mutation:**
+
+```graphql
+mutation {
+  createPickUpStores(
+    input: {
+      name: "Mustation Store"
+      street: "sweswq"
+      street_num: 12
+      postcode: "83059"
+      latitude: 22.3
+      longitude: 22.3
+    }
+  ) {
+    pick_up_store {
+      name
+    }
+  }
+}
+```

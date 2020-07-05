@@ -1,0 +1,8 @@
+# Add files here to ignore them from prettier formatting
+
+/dist
+/coverage
+
+/apps/larsroettig.dev/node_modules
+/apps/larsroettig.dev/public
+/apps/larsroettig.dev/.cache
