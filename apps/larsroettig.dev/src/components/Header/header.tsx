@@ -36,7 +36,7 @@ const Header = () => {
             <Box sx={{ display: 'flex' }}>
               <ColorModeToggle isDark={isDark} toggle={toggleColorMode} />
               <Link
-                alt="A Link to rss feed"
+                aria-label="Rss feed"
                 to={replaceSlashes(`/${basePath}/rss.xml`)}
                 sx={{ padding: '2px 1rem', color }}
               >
