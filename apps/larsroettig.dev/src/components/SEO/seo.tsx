@@ -391,12 +391,6 @@ const SEO: React.FC<HelmetProps> = ({
       meta={metaTags}
     >
       <script type="application/ld+json">{schema}</script>
-      <script
-        async
-        defer
-        data-domain="larsroettig.dev"
-        src="https://stats.larsroettig.dev/js/index.js"
-      ></script>
       {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
       {children}
     </Helmet>
