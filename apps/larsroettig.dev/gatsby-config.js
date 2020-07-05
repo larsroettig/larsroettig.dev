@@ -5,7 +5,7 @@ const withDefaults = require('./gatsby/node/themeOption');
 // can overwrite default options
 const themeOptions = {
   navigation: [],
-  contentRepo: 'https://github.com/larsroettig/larsroettig.dev/edit/master/site',
+  contentRepo: 'https://github.com/larsroettig/larsroettig.dev/edit/master/apps/larsroettig.dev',
 };
 const options = withDefaults(themeOptions);
 
