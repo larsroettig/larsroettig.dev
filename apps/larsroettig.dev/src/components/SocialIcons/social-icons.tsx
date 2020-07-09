@@ -14,9 +14,9 @@ const SocialIcons = () => (
       border-bottom: 1px solid #e2e8f0;
     `}
   >
-    <Container padding={'1.5rem 2rem'}>
+    <Container padding={'1.5em 2em'}>
       <Flex sx={{ flexWrap: 'wrap' }}>
-        <IconContext.Provider value={{ color: 'text', size: '1.5rem' }}>
+        <IconContext.Provider value={{ color: 'text', size: '1.5em' }}>
           <Box sx={{ width: ['25%'] }}>
             <SocialIcon url={'https://twitter.com/LarsRoettig'}>
               <FaTwitter />
