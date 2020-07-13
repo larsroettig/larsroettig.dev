@@ -392,7 +392,7 @@ const SEO: React.FC<HelmetProps> = ({
     >
       <script type="application/ld+json">{schema}</script>
       {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-      <script async defer data-domain="larsroettig.dev" src="https://plausible.io/js/plausible.js"></script>
+      <script async defer data-domain="larsroettig.dev" src="https://stats.larsroettig.dev/js/index.js"></script>
       {children}
     </Helmet>
   );
