@@ -45,7 +45,6 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "apps/larsroettig.dev/jest.config.js",
-            "tsConfig": "apps/larsroettig.dev/tsconfig.spec.json",
             "passWithNoTests": true
           }
         }

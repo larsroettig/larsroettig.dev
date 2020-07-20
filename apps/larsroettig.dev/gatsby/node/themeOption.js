@@ -8,7 +8,7 @@ module.exports = (themeOptions) => {
   const supporterPath = themeOptions.authors || 'content/supporter';
   const imagePath = themeOptions.imagePath || 'images';
   const navigation = themeOptions.navigation || [];
-  const contentRepo = themeOptions.contentRepo || '';
+  const contentRepo = 'https://github.com/larsroettig/larsroettig.dev/edit/master/apps/larsroettig.dev';
   const formatString = themeOptions.formatString || 'DD.MM.YYYY';
 
   return {
