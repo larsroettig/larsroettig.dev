@@ -5,13 +5,12 @@ import { Box, Flex } from '@theme-ui/components';
 import { tailwind } from '@theme-ui/presets';
 import { FaRss } from 'react-icons/all';
 import Container from '../container';
-import useBlogConfig from '../../hooks/useBlogConfig';
 import ColorModeToggle from './colormode-toggle';
 import replaceSlashes from '../../utils/replaceSlashes';
 import LarsLogo from '../Brand';
 
 const Header = () => {
-  const { basePath } = useBlogConfig();
+  const basePath = 'https://larsroettig.dev'
   const [colorMode, setColorMode] = useColorMode();
   const isDark = colorMode === 'dark';
   const toggleColorMode = (e: any) => {
