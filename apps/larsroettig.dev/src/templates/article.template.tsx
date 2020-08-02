@@ -128,7 +128,7 @@ const Article: Template = ({ pageContext, location }) => {
               sx={{
                 my: 5,
                 '.gatsby-resp-image-wrapper': {
-                  my: [4, 4, 5],
+                  my: [0],
                   maxWidth: '100% !important;',
                 },
               }}
