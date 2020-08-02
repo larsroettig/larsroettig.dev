@@ -10,7 +10,7 @@ import replaceSlashes from '../../utils/replaceSlashes';
 import LarsLogo from '../Brand';
 
 const Header = () => {
-  const basePath = 'https://larsroettig.dev'
+  const basePath = '/';
   const [colorMode, setColorMode] = useColorMode();
   const isDark = colorMode === 'dark';
   const toggleColorMode = (e: any) => {
