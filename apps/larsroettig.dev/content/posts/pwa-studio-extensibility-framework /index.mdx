@@ -1,7 +1,7 @@
 ---
 title: Getting started with PWA Studio Extensibility
-date: 2020-06-30
-updated_at: 2020-06-30
+date: 2020-07-03
+updated_at: 2020-07-03
 author: Lars Roettig
 description: In this tutorial I want to show how you can use the PWA Studio Extensibility framework.
 hero: ./PWA_Studio_Extensibility_Teaser.jpg
@@ -118,7 +118,7 @@ More Information you can find here https://hacks.mozilla.org/2018/03/es-modules-
 }
 ```
 
-```javascript:title=intercept.js
+```javascript:title=intercept.js{12}
 const moduleOverridePlugin = require('./moduleOverrideWebpackPlugin');
 const componentOverrideMapping = {
     [`@magento/venia-ui/lib/components/Main/main.js`]: './lib/overwrites/components/Main/main.js',
@@ -339,8 +339,15 @@ extension via `yarn install --force`
 
 ![Final_Module.jpg](Final_Module.jpg)
 
-**The Final Github Repo you can find here:**
-https://github.com/larsroettig/pwa-studio-component-override
+<Callout>
+<b>The Final Github Repo you can find here:
+<br/>
+  <a href="https://github.com/larsroettig/pwa-studio-component-override">
+      Github Repo
+  </a>
+</b>
+
+</Callout>
 
 #### Tipps
 
