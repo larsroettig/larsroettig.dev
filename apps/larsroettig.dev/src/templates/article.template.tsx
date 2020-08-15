@@ -40,7 +40,7 @@ const siteQuery = graphql`
           image {
             desktop {
               childImageSharp {
-                fluid(maxWidth: 300, maxHeight: 600, quality: 70) {
+                fluid(maxWidth: 300, quality: 70) {
                   base64
                   aspectRatio
                   src
