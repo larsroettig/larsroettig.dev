@@ -14,9 +14,9 @@ const ProDev = () => (
       <StaticQuery
         query={graphql`
           query {
-            placeholderImage: file(relativePath: { eq: "prof_developer.png" }) {
+            placeholderImage: file(relativePath: { eq: "Adobe_Certified_Expert_Magento_Commerce_Developer_Badge.png" }) {
               childImageSharp {
-                fluid(maxWidth: 80) {
+                fluid(maxWidth: 300) {
                   ...GatsbyImageSharpFluid_withWebp
                 }
               }
@@ -24,7 +24,7 @@ const ProDev = () => (
           }
         `}
         render={(data) => (
-          <div sx={{ maxWidth: '80px', margin: 'auto' }}>
+          <div sx={{ maxWidth: '300px', margin: 'auto' }}>
             <Img
               alt="Image from my Magento 2 professional developer certification"
               fluid={data.placeholderImage.childImageSharp.fluid}

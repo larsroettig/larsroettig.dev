@@ -30,7 +30,7 @@ const About = () => (
               feature request.
             </p>
             <p>
-              In my Free time I really like to bask in nature’s glory right here
+              In my free time I really like to bask in nature’s glory right here
               in the south of Bavaria. I also like cycling, hiking or sometimes
               just relax somewhere to free the mind and gain new ideas.
             </p>
