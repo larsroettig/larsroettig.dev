@@ -62,7 +62,7 @@
     "lodash.kebabcase": "^4.1.1",
     "mdx-utils": "^0.2.0",
     "prism-react-renderer": "^1.0.2",
-    "prismjs": "1.20.0",
+    "prismjs": "1.21.0",
     "prop-types": "15.7.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
