@@ -32,7 +32,7 @@ const MobileImg = styled(Img)`
 const SupporterItem = ({supporter}: SupporterItemProps) => {
   const size = useWindowSize();
 
-  const SupporterImage = size.width <= 640 ?
+  const SupporterImage = size.width < 1024 ?
     (<MobileImg
       alt={supporter.alt}
       fluid={supporter.image.mobile.childImageSharp.fluid}

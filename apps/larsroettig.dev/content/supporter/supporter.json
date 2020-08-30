@@ -13,8 +13,8 @@
     "name": "Reacticon Conference",
     "website": "https://reacticon.org/",
     "image": {
-      "desktop": "./images/reaction_conf.png",
-      "mobile": "./images/reaction_conf.png"
+      "desktop": "./images/reacticon.png",
+      "mobile": "./images/reacticon_mobile.png"
     },
     "alt": "Reacticon Conference Logo",
     "follow": true
