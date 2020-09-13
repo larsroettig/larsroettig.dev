@@ -6,17 +6,24 @@ import { Box, Grid, Text } from '@theme-ui/components';
 const employerList = [
   {
     company_name: 'TechDivision GmbH',
+    title: 'Senior Software Engineer E-Commerce',
+    tech_stack: 'Magento 2, PHP, React, JavaScript',
+    start_date: '2020-09',
+    end_date: 'now',
+  },
+  {
+    company_name: 'TechDivision GmbH',
     title: 'Software Engineer E-Commerce',
     tech_stack: 'Magento 2, PHP, React, JavaScript',
-    start_date: '2015',
-    end_date: 'now',
+    start_date: '2015-09',
+    end_date: '2020-08',
   },
   {
     company_name: 'TechDivision GmbH',
     title: 'Junior Software Engineer',
     tech_stack: 'PHP, Magento',
-    start_date: '2013',
-    end_date: '2015',
+    start_date: '2013-09',
+    end_date: '2015-08',
   },
   {
     company_name: 'SportIdent GmbH',

@@ -34,6 +34,9 @@ const Callout = (properties: React.PropsWithChildren<CalloutProps>) => {
         wordWrap: 'break-word',
         borderLeft: '5px solid',
         ...variantStyles[type],
+        '& a': {
+          color: tailwind.colors.blue[7]
+        }
       }}
     >
       {properties.children}

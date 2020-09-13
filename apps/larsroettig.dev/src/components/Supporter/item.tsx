@@ -32,6 +32,10 @@ const MobileImg = styled(Img)`
 const SupporterItem = ({supporter}: SupporterItemProps) => {
   const size = useWindowSize();
 
+  if (!supporter.image.mobile.childImageSharp.fluid && !supporter.image.desktop.childImageSharp.fluid) {
+    return;
+  }
+
   const SupporterImage = size.width < 1024 ?
     (<MobileImg
       alt={supporter.alt}
@@ -40,7 +44,6 @@ const SupporterItem = ({supporter}: SupporterItemProps) => {
       alt={supporter.alt}
       fluid={supporter.image.desktop.childImageSharp.fluid}
     />);
-
 
   return (
     <a href={supporter.website}>
