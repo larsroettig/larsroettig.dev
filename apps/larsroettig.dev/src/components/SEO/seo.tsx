@@ -392,8 +392,8 @@ const SEO: React.FC<HelmetProps> = ({
     >
       <script type="application/ld+json">{schema}</script>
       {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-      <link rel="webmention" href="https://webmention.io/larsroettig,dev/webmention" />
-      <link rel="pingback" href="https://webmention.io/larsroettig,dev/xmlrpc" />
+      <link rel="webmention" href="https://webmention.io/larsroettig.dev/webmention" />
+      <link rel="pingback" href="https://webmention.io/larsroettig.dev/xmlrpc" />
       <script async defer data-domain="larsroettig.dev" src="https://stats.larsroettig.dev/js/index.js"></script>
       {children}
     </Helmet>
