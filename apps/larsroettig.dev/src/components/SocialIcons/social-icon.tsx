@@ -5,7 +5,7 @@ type SocialIconProps = { url: string; children: React.ReactNode };
 
 const SocialIcon = ({ url, children }: SocialIconProps) => (
   <a
-    rel="noopener noreferrer nofollow"
+    rel="me"
     data-a11y="false"
     aria-label={`Link to ${url}`}
     href={url}
