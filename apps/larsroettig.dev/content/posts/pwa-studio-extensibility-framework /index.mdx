@@ -117,10 +117,10 @@ More Information you can find here https://hacks.mozilla.org/2018/03/es-modules-
 }
 ```
 
-```javascript:title=intercept.js{12}
+```javascript:title=intercept.js {12}
 const moduleOverridePlugin = require('./moduleOverrideWebpackPlugin');
 const componentOverrideMapping = {
-    [`@magento/venia-ui/lib/components/Main/main.js`]: './lib/overwrites/components/Main/main.js',
+    '@magento/venia-ui/lib/components/Main/main.js': './lib/overwrites/components/Main/main.js',
 };
 
 module.exports = targets => {
