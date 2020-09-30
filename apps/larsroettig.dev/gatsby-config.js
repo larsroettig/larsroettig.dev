@@ -165,6 +165,7 @@ const plugins = [
   'gatsby-transformer-remark',
   'gatsby-transformer-json',
   'gatsby-plugin-sharp',
+  'gatsby-plugin-preact'
 ];
 
 module.exports = {
