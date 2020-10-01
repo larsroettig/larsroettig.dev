@@ -5,16 +5,16 @@
 
 
 <a href="https://larsroettig.dev/" target="_blank">
-<img src="https://github.com/larsroettig/larsroettig.dev/blob/main/static/preview_full.png" alt="larsroettig.dev hero image" />
+<img src="https://github.com/larsroettig/larsroettig.dev/blob/develop/static/preview_full.png" alt="larsroettig.dev hero image" />
 </a>
 <br/>
 
 
 Source Code from the website:
-https://github.com/larsroettig/larsroettig.dev/tree/main/apps/larsroettig.dev
+https://github.com/larsroettig/larsroettig.dev/tree/develop/apps/larsroettig.dev
 
 Content Structure: 
-https://github.com/larsroettig/larsroettig.dev/tree/main/apps/larsroettig.dev/content
+https://github.com/larsroettig/larsroettig.dev/tree/develop/apps/larsroettig.dev/content
 ```
   content
     │ ├── authors
