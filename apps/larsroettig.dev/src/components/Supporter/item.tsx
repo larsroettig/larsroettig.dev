@@ -4,6 +4,7 @@ import {Supporter} from '../../types';
 import styled from '@emotion/styled';
 import Img from 'gatsby-image';
 import useWindowSize from "../../hooks/useWindowSize";
+import {useMobileScreen} from "../../hooks/useMobileScreen";
 
 type SupporterItemProps = {
   supporter: Supporter;
@@ -30,13 +31,13 @@ const MobileImg = styled(Img)`
 `;
 
 const SupporterItem = ({supporter}: SupporterItemProps) => {
-  const size = useWindowSize();
+  const mobileScreen = useMobileScreen();
 
   if (!supporter.image.mobile.childImageSharp.fluid && !supporter.image.desktop.childImageSharp.fluid) {
     return;
   }
 
-  const SupporterImage = size.width < 1024 ?
+  const SupporterImage =  mobileScreen ?
     (<MobileImg
       alt={supporter.alt}
       fluid={supporter.image.mobile.childImageSharp.fluid}
