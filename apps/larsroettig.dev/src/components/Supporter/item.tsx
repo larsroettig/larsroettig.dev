@@ -3,7 +3,6 @@ import {jsx} from 'theme-ui';
 import {Supporter} from '../../types';
 import styled from '@emotion/styled';
 import Img from 'gatsby-image';
-import useWindowSize from "../../hooks/useWindowSize";
 import {useMobileScreen} from "../../hooks/useMobileScreen";
 
 type SupporterItemProps = {
