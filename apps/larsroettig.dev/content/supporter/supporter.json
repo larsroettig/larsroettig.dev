@@ -18,5 +18,15 @@
     },
     "alt": "Reacticon Conference Logo",
     "follow": true
+  },
+  {
+    "name": "What's new at O'Reilly",
+    "website": "https://www.oreilly.com/pub/cpc/323147",
+    "image": {
+      "desktop": "./images/whats-new-300x250.jpg",
+      "mobile": "./images/whats-new-728x90.jpg"
+    },
+    "alt": "What's new at O'Reilly online learning?",
+    "follow": true
   }
 ]
