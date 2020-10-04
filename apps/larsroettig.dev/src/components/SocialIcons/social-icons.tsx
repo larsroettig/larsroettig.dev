@@ -3,7 +3,7 @@ import { jsx } from 'theme-ui';
 import { css } from '@emotion/core';
 import { Box, Flex } from '@theme-ui/components';
 import { IconContext } from 'react-icons';
-import { FaFacebookF, FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaTwitter, FaYoutube} from 'react-icons/fa';
 import Container from '../container';
 import SocialIcon from './social-icon';
 
@@ -23,8 +23,8 @@ const SocialIcons = () => (
             </SocialIcon>
           </Box>
           <Box sx={{ width: ['25%'] }}>
-            <SocialIcon url={'https://www.facebook.com/larsroettig.dev/'}>
-              <FaFacebookF />
+            <SocialIcon url={'https://www.youtube.com/c/LarsRoettig'}>
+              <FaYoutube />
             </SocialIcon>
           </Box>
           <Box sx={{ width: ['25%'] }}>
