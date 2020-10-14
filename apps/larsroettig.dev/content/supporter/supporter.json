@@ -10,23 +10,13 @@
     "follow": true
   },
   {
-    "name": "Reacticon Conference",
-    "website": "https://reacticon.org/",
+    "name": "Pacemaker for Magento 2 - Import and process management tool",
+    "website": "https://pacemaker.techdivision.com/en",
     "image": {
-      "desktop": "./images/reacticon.png",
-      "mobile": "./images/reacticon_mobile.png"
+      "desktop": "./images/pacemaker-300x600.jpg",
+      "mobile": "./images/pacemaker-728x90.jpg"
     },
-    "alt": "Reacticon Conference Logo",
-    "follow": true
-  },
-  {
-    "name": "What's new at O'Reilly",
-    "website": "https://www.oreilly.com/pub/cpc/323147",
-    "image": {
-      "desktop": "./images/whats-new-300x250.jpg",
-      "mobile": "./images/whats-new-728x90.jpg"
-    },
-    "alt": "What's new at O'Reilly online learning?",
+    "alt": "Pacemaker for Magento 2 - Import and process management tool",
     "follow": true
   }
 ]
