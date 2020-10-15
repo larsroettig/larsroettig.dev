@@ -796,6 +796,12 @@ graph attribute for filtering. Currently there is no general implementation.
 This Class is needed to add our filter fields as attributes to Magento's argument resolver (`Magento\Framework\GraphQl\Query\Resolver\Argument\FieldEntityAttributesPool`).
 Currently, there is no implementation in the Magento core that will do it automatically.
 
+<Callout type={'info'}>
+    <p className={'p-2'}>For Magento 2.4 you need a different Resolver Implement ! </p>
+</Callout>
+
+#### Code for Magento 2.3
+
 ```php:title=GraphQLStorePickup/Model/Resolver/FilterArgument.php
 <?php
 declare(strict_types=1);
@@ -828,6 +834,45 @@ class FilterArgument implements FieldEntityAttributesInterface
     }
 }
 ```
+
+#### Code for Magento 2.4
+
+```GraphQLStorePickup/Model/Resolver/FilterArgument.php
+<?php
+
+declare(strict_types=1);
+
+namespace LarsRoettig\StorePickupGraphQL\Model\Resolver;
+
+use Magento\Framework\GraphQl\Config\Element\Field;
+use Magento\Framework\GraphQl\ConfigInterface;
+use Magento\Framework\GraphQl\Query\Resolver\Argument\FieldEntityAttributesInterface;
+
+class FilterArgument implements FieldEntityAttributesInterface
+{
+    /** @var ConfigInterface */
+    private $config;
+
+    public function __construct(ConfigInterface $config)
+    {
+        $this->config = $config;
+    }
+
+    public function getEntityAttributes(): array
+    {
+        $fields = [];
+        /** @var Field $field */
+        foreach ($this->config->getConfigElement('PickUpStore')->getFields() as $field) {
+            $fields[$field->getName()] = [
+                'type' => 'String',
+                'fieldName' => $field->getName(),
+            ];
+        }
+        return $fields;
+    }
+}
+```
+
 
 ### 3. Installation:
 
