@@ -1,5 +1,6 @@
-/* eslint react/destructuring-assignment: 0 */
-import * as React from 'react';
+/** @jsx jsx */
+import React from 'react';
+import { jsx } from 'theme-ui';/* eslint react/destructuring-assignment: 0 */
 import Highlight, { defaultProps } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/nightOwl';
 import Prism from 'prism-react-renderer/prism';

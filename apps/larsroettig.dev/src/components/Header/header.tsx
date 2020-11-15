@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, useColorMode } from 'theme-ui';
-import { Link } from 'gatsby';
+
 import { Box, Flex } from '@theme-ui/components';
 import { tailwind } from '@theme-ui/presets';
 import { FaRss } from 'react-icons/all';
@@ -24,23 +24,23 @@ const Header = () => {
       <Container padding={'1rem 2rem '}>
         <header>
           <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-            <Link
-              to={replaceSlashes(`/${basePath}`)}
+            <a
+              href={replaceSlashes(`/${basePath}`)}
               aria-label={`Back to home`}
               sx={{ color: 'heading', textDecoration: 'none' }}
             >
               <LarsLogo color={color} />
-            </Link>
+            </a>
 
             <Box sx={{ display: 'flex' }}>
               <ColorModeToggle isDark={isDark} toggle={toggleColorMode} />
-              <Link
+              <a
                 aria-label="Rss feed"
-                to={replaceSlashes(`/${basePath}/rss.xml`)}
+                href={replaceSlashes(`/${basePath}/rss.xml`)}
                 sx={{ padding: '2px 1rem', color }}
               >
                 <FaRss />
-              </Link>
+              </a>
             </Box>
           </Flex>
         </header>
