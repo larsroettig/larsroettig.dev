@@ -3,8 +3,7 @@ import { jsx } from 'theme-ui';
 import * as React from 'react';
 import { Box, Grid } from '@theme-ui/components';
 import Container from '../container';
-import Top50 from './cert-top50';
-import ProDev from './pro-dev';
+import { StaticImage } from 'gatsby-plugin-image';
 
 const Employer = React.lazy(() => import('./employer'));
 
@@ -42,8 +41,30 @@ const About = () => (
                 gridTemplateColumns: ['1fr 1fr'],
               }}
             >
-              <ProDev />
-              <Top50 />
+              <Box>
+                <StaticImage
+                  layout="fluid"
+                  maxWidth={200}
+                  src="Adobe_Certified_Expert_Magento_Commerce_Developer_Badge.png"
+                  alt="T-Rex"
+                />
+              </Box>
+              <a
+                rel="noopener noreferrer nofollow"
+                data-a11y="false"
+                href={
+                  'https://magento.com/blog/technical/thank-you-top-50-contributors-2017'
+                }
+              >
+                <Box>
+                  <StaticImage
+                    layout="fluid"
+                    maxWidth={200}
+                    src="top50.png"
+                    alt="T-Rex"
+                  />
+                </Box>
+              </a>
             </Grid>
           </Box>
           <Box>

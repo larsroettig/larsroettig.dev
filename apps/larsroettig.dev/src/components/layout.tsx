@@ -32,7 +32,7 @@ const Layout = ({ children }: LayoutProps) => {
             a: {
               transition: 'all 0.3s ease-in-out',
               color: 'text',
-            },
+            }
           })}
         />
         <Header />

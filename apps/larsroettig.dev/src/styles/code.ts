@@ -31,7 +31,7 @@ export default {
     webkitOverflowScrolling: 'touch',
     bg: 'rgb(1, 22, 39)',
     overflow: 'auto',
-    mx: [0, 0, 0, -3],
+    mx: [0],
     '.token-line': {
       mx: -3,
     },
@@ -156,10 +156,10 @@ export default {
     px: 3,
     py: 2,
     fontFamily: 'monospace',
-    mx: [0, 0, 0, -3],
+    mx: [0],
   },
   "[data-name='live-preview'], [data-name='live-editor']": {
-    mx: [0, 0, 0, -3],
+    mx: [0],
   },
   '.token-line': {
     pr: 3,

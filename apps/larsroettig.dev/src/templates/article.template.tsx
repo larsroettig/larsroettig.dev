@@ -1,4 +1,5 @@
 /** @jsx jsx */
+import React from 'react';
 import { jsx } from 'theme-ui';
 import styled from '@emotion/styled';
 import { Box, Flex } from '@theme-ui/components';
@@ -14,10 +15,10 @@ import Share from '../components/Share';
 import { breakpointMd } from '../styles/breakpoints';
 import ArticleSEO from '../components/SEO/article-seo';
 import { graphql, useStaticQuery } from 'gatsby';
-import SupporterList from '../components/Supporter';
 import Author from '../components/Author';
 import RelatedBlogPosts from '../components/RelatedBlogPosts';
 import GatsbyImage from 'gatsby-image';
+const SupporterList = React.lazy(() => import('../components/Supporter'));
 
 const siteQuery = graphql`
   {
@@ -79,6 +80,7 @@ const Article: Template = ({ pageContext, location }) => {
   const siteUrl = results.allSite.edges[0].node.siteMetadata.siteUrl;
   const shareUrl = siteUrl + location.pathname;
   const supporterList = results.supporters.edges;
+  const isSSR = typeof window === 'undefined';
 
   return (
     <Layout>
@@ -134,6 +136,7 @@ const Article: Template = ({ pageContext, location }) => {
               }}
             >
               <MDX content={article.body} />
+
               <p sx={{ textAlign: 'right', fontWeight: '300' }}>
                 <a
                   sx={{ textDecoration: 'none', color: 'primary' }}
@@ -150,7 +153,14 @@ const Article: Template = ({ pageContext, location }) => {
           </Box>
           <SideBar>
             <Share url={shareUrl} title={article.title} />
-            <SupporterList supporterList={supporterList} />
+
+          {!isSSR && (
+          <React.Suspense fallback={<div />}>
+           <SupporterList supporterList={supporterList} />
+          </React.Suspense>
+          )}
+
+
           </SideBar>
         </Flex>
       </Container>

@@ -39,6 +39,8 @@ export default MDX;
 const MDXBody = styled.div`
   position: relative;
   display: flex;
+  content-visibility: auto;
+  contain-intrinsic-size: 100px 1000px;
   justify-content: center;
   flex-direction: column;
 `;
